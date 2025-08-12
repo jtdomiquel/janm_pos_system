@@ -1,0 +1,20 @@
+# Binaries and build outputs
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+
+# IDE files (VS, Rider, etc.)
+.vs/
+.idea/
+*.sln.iml
+
+# NuGet packages
+packages/
+*.nupkg
