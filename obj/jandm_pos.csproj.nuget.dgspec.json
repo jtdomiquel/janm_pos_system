@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Jomark Domiquel\\source\\repos\\jandm_pos\\jandm_pos\\jandm_pos.csproj": {}
+    "D:\\JANM Pos System\\jandm_pos\\jandm_pos\\jandm_pos.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Jomark Domiquel\\source\\repos\\jandm_pos\\jandm_pos\\jandm_pos.csproj": {
+    "D:\\JANM Pos System\\jandm_pos\\jandm_pos\\jandm_pos.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Jomark Domiquel\\source\\repos\\jandm_pos\\jandm_pos\\jandm_pos.csproj",
+        "projectUniqueName": "D:\\JANM Pos System\\jandm_pos\\jandm_pos\\jandm_pos.csproj",
         "projectName": "jandm_pos",
-        "projectPath": "C:\\Users\\Jomark Domiquel\\source\\repos\\jandm_pos\\jandm_pos\\jandm_pos.csproj",
+        "projectPath": "D:\\JANM Pos System\\jandm_pos\\jandm_pos\\jandm_pos.csproj",
         "packagesPath": "C:\\Users\\Jomark Domiquel\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Jomark Domiquel\\source\\repos\\jandm_pos\\jandm_pos\\obj\\",
+        "outputPath": "D:\\JANM Pos System\\jandm_pos\\jandm_pos\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

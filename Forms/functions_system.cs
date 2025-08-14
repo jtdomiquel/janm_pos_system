@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -135,10 +136,11 @@ namespace jandm_pos.Forms
             }
         }
 
-        admin_dashboard admin_Dashboard = new admin_dashboard();
-        
+
+
         public void HideSubMenu()
         {
+            admin_dashboard admin_Dashboard = new admin_dashboard();
             if (admin_Dashboard.panel5.Visible)
             {
                 admin_Dashboard.panel5.Visible = false;
@@ -161,6 +163,200 @@ namespace jandm_pos.Forms
                 submenu.Visible = false;
             }
         }
+
+        public void HideFuncPanel()
+        {
+            admin_dashboard admin_Dashboard = new admin_dashboard();
+            if (admin_Dashboard.panel7.Visible)
+            {
+                admin_Dashboard.panel7.Visible = false;
+            }
+            if (admin_Dashboard.panel3.Visible)
+            {
+                admin_Dashboard.panel3.Visible = false;
+            }
+        }
+
+        public void ShowFuncPanel(Panel submenu)
+        {
+            if (!submenu.Visible)
+            {
+                HideFuncPanel();
+                submenu.Visible = true;
+            }
+            else
+            {
+                submenu.Visible = false;
+            }
+        }
+
+        public void displayUsers(ListView targetListView)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+                string query = "SELECT * FROM users";
+
+                MySqlDataAdapter dataAdapter = new MySqlDataAdapter(query, conn);
+                DataTable dataTable = new DataTable();
+                dataAdapter.Fill(dataTable);
+
+                targetListView.Items.Clear();
+
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    ListViewItem item = new ListViewItem(Convert.ToString(row[0]));
+                    item.SubItems.Add(Convert.ToString(row[3]));
+                    item.SubItems.Add(Convert.ToString(row[4]));
+                    item.SubItems.Add(Convert.ToString(row[5]));
+                    item.SubItems.Add(Convert.ToString(row[6]));
+                    item.SubItems.Add(Convert.ToString(row[7]));
+                    
+                    if (Convert.ToBoolean(row[8])) 
+                    {
+                        item.SubItems.Add("Activate");
+                    }
+                    else
+                    {
+                        item.SubItems.Add("Deactivate");
+                    }
+
+                    item.SubItems.Add(Convert.ToString(row[10]));
+                    item.SubItems.Add(Convert.ToString(row[9]));
+
+                    targetListView.Items.Add(item);
+                }
+            }
+        }
+
+        public void searchUsers(ListView targetListView, string search)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+                string query = "SELECT * FROM users"+
+                    " WHERE users.`firstname` LIKE '" + search + "%' "+
+                    " OR users.`middlename` LIKE '" + search + "%' "+
+                    " OR users.`lastname` LIKE '" + search + "%' "+
+                    " OR users.`role` LIKE '" + search + "%' ";
+
+                MySqlDataAdapter dataAdapter = new MySqlDataAdapter(query, conn);
+                DataTable dataTable = new DataTable();
+                dataAdapter.Fill(dataTable);
+
+                targetListView.Items.Clear();
+
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    ListViewItem item = new ListViewItem(Convert.ToString(row[0]));
+                    item.SubItems.Add(Convert.ToString(row[3]));
+                    item.SubItems.Add(Convert.ToString(row[4]));
+                    item.SubItems.Add(Convert.ToString(row[5]));
+                    item.SubItems.Add(Convert.ToString(row[6]));
+                    item.SubItems.Add(Convert.ToString(row[7]));
+
+                    if (Convert.ToBoolean(row[8]))
+                    {
+                        item.SubItems.Add("Active");
+                    }
+                    else
+                    {
+                        item.SubItems.Add("Disable");
+                    }
+
+                    item.SubItems.Add(Convert.ToString(row[10]));
+                    item.SubItems.Add(Convert.ToString(row[9]));
+
+                    targetListView.Items.Add(item);
+                }
+            }
+        }
+
+        public void updateUserDetails(string userId, string firstname, string middlename, string lastname, string address, string contact_no, 
+            bool is_active, string role)
+        {
+            
+            using (var conn = Database.GetConnection())
+            {
+                string sql = @"UPDATE users 
+                       SET firstname = @firstname, 
+                           middlename = @middlename, 
+                           lastname = @lastname, 
+                           address = @address, 
+                           contact_no = @contact_no, 
+                           is_active = @is_active, 
+                           role = @role 
+                       WHERE user_id = @userId";
+
+                try
+                {
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@firstname", firstname);
+                        cmd.Parameters.AddWithValue("@middlename", middlename);
+                        cmd.Parameters.AddWithValue("@lastname", lastname);
+                        cmd.Parameters.AddWithValue("@address", address);
+                        cmd.Parameters.AddWithValue("@contact_no", contact_no);
+                        cmd.Parameters.AddWithValue("@is_active", is_active);
+                        cmd.Parameters.AddWithValue("@role", role);
+                        cmd.Parameters.AddWithValue("@userId", userId);
+
+                        conn.Open();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("User Account Update Successfully.");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        public void getUserDetailsToForm(string userId, admin_dashboard userForm)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                string query = @"
+                SELECT * FROM `users`
+                WHERE users.`user_id` = @userId";
+
+                MySqlDataAdapter adapter = new MySqlDataAdapter(query, conn);
+                adapter.SelectCommand.Parameters.AddWithValue("@userId", userId);
+
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                if (dt.Rows.Count > 0)
+                {
+                   
+                    userForm.label18.Text = dt.Rows[0][0].ToString();
+                    userForm.textBox2.Text = dt.Rows[0][3].ToString();
+                    userForm.textBox4.Text = dt.Rows[0][4].ToString();
+                    userForm.textBox5.Text = dt.Rows[0][5].ToString();
+                    userForm.textBox3.Text = dt.Rows[0][6].ToString();
+                    userForm.textBox6.Text = dt.Rows[0][7].ToString();
+               
+
+                    if (Convert.ToBoolean(dt.Rows[0][8]))
+                    {
+                        userForm.comboBox1.Text = "Activate";
+                    }
+                    else 
+                    {
+                        userForm.comboBox1.Text = "Deactivate";
+                    }
+                    userForm.comboBox2.Text = dt.Rows[0][10].ToString();
+                
+                }
+            }
+        }
+
+
 
     }
 }
