@@ -164,16 +164,24 @@ namespace jandm_pos.Forms
             }
         }
 
+       
         public void HideFuncPanel()
         {
             admin_dashboard admin_Dashboard = new admin_dashboard();
+
+            if (admin_Dashboard.panel3.Visible)
+            {
+                admin_Dashboard.panel3.Visible = false;
+            }
+
             if (admin_Dashboard.panel7.Visible)
             {
                 admin_Dashboard.panel7.Visible = false;
             }
-            if (admin_Dashboard.panel3.Visible)
+            
+            if (admin_Dashboard.panel9.Visible)
             {
-                admin_Dashboard.panel3.Visible = false;
+                admin_Dashboard.panel9.Visible = false;
             }
         }
 
@@ -183,6 +191,7 @@ namespace jandm_pos.Forms
             {
                 HideFuncPanel();
                 submenu.Visible = true;
+                submenu.BringToFront();
             }
             else
             {
@@ -190,45 +199,7 @@ namespace jandm_pos.Forms
             }
         }
 
-        public void displayUsers(ListView targetListView)
-        {
-            using (var conn = Database.GetConnection())
-            {
-                conn.Open();
-                string query = "SELECT * FROM users";
-
-                MySqlDataAdapter dataAdapter = new MySqlDataAdapter(query, conn);
-                DataTable dataTable = new DataTable();
-                dataAdapter.Fill(dataTable);
-
-                targetListView.Items.Clear();
-
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    ListViewItem item = new ListViewItem(Convert.ToString(row[0]));
-                    item.SubItems.Add(Convert.ToString(row[3]));
-                    item.SubItems.Add(Convert.ToString(row[4]));
-                    item.SubItems.Add(Convert.ToString(row[5]));
-                    item.SubItems.Add(Convert.ToString(row[6]));
-                    item.SubItems.Add(Convert.ToString(row[7]));
-                    
-                    if (Convert.ToBoolean(row[8])) 
-                    {
-                        item.SubItems.Add("Activate");
-                    }
-                    else
-                    {
-                        item.SubItems.Add("Deactivate");
-                    }
-
-                    item.SubItems.Add(Convert.ToString(row[10]));
-                    item.SubItems.Add(Convert.ToString(row[9]));
-
-                    targetListView.Items.Add(item);
-                }
-            }
-        }
-
+        
         public void searchUsers(ListView targetListView, string search)
         {
             using (var conn = Database.GetConnection())
@@ -356,7 +327,126 @@ namespace jandm_pos.Forms
             }
         }
 
+        public void add_new_productCategory(string categoryName, string description)
+        {
 
+            if (string.IsNullOrEmpty(categoryName) || string.IsNullOrEmpty(description))
+            {
+                MessageBox.Show("Please fill in all required fields.");
+                return;
+            }
+       
+
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+                string query = @"INSERT INTO product_category 
+                                (category_name, description, date_save) 
+                                VALUES (@category_name, @description, @date_save)";
+                using (var cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@category_name", categoryName);
+                    cmd.Parameters.AddWithValue("@description", description);
+                    cmd.Parameters.AddWithValue("@date_save", DateTime.Now);
+
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Product category added successfully!");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: " + ex.Message);
+                    }
+                }
+            }
+
+        }
+
+        public void displayCategoriesTble(ListView targetListView, string search)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+                string query = "SELECT * FROM product_category"+
+                    " WHERE `category_name` LIKE '" + search + "%' " +
+                    " OR `description` LIKE '" + search + "%' ";
+
+                MySqlDataAdapter dataAdapter = new MySqlDataAdapter(query, conn);
+                DataTable dataTable = new DataTable();
+                dataAdapter.Fill(dataTable);
+
+                targetListView.Items.Clear();
+
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    ListViewItem item = new ListViewItem(Convert.ToString(row[0]));
+                    item.SubItems.Add(Convert.ToString(row[1]));
+                    item.SubItems.Add(Convert.ToString(row[2]));
+                    item.SubItems.Add(Convert.ToString(row[3]));
+
+                    targetListView.Items.Add(item);
+                }
+            }
+        }
+
+        public void getProductCategoryDetailsToForm(string categoryId, admin_dashboard userForm)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                string query = @"
+                SELECT * FROM `product_category`
+                WHERE product_category.`id` = @prodId";
+
+                MySqlDataAdapter adapter = new MySqlDataAdapter(query, conn);
+                adapter.SelectCommand.Parameters.AddWithValue("@prodId", categoryId);
+
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                if (dt.Rows.Count > 0)
+                {
+                    userForm.label13.Text = dt.Rows[0][0].ToString();
+                    userForm.textBox10.Text = dt.Rows[0][1].ToString();
+                    userForm.textBox7.Text = dt.Rows[0][2].ToString();
+
+                }
+            }
+        }
+
+        public void updateProductCategoryDetails(string prodId, string categoryName, string description)
+        {
+
+            using (var conn = Database.GetConnection())
+            {
+                string sql = @"UPDATE product_category 
+                       SET category_name = @category_name, 
+                           description = @description
+                       WHERE id = @prodId";
+
+                try
+                {
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@category_name", categoryName);
+                        cmd.Parameters.AddWithValue("@description", description);
+                        cmd.Parameters.AddWithValue("@prodId", prodId);
+
+                        conn.Open();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Product category updated successfully.");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
 
     }
 }

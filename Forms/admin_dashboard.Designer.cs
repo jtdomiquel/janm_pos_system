@@ -84,6 +84,26 @@
             columnHeader8 = new ColumnHeader();
             columnHeader9 = new ColumnHeader();
             label6 = new Label();
+            panel9 = new Panel();
+            panel10 = new Panel();
+            button15 = new Button();
+            label19 = new Label();
+            textBox7 = new TextBox();
+            label13 = new Label();
+            pictureBox4 = new PictureBox();
+            button10 = new Button();
+            button13 = new Button();
+            label22 = new Label();
+            textBox10 = new TextBox();
+            label24 = new Label();
+            button14 = new Button();
+            textBox12 = new TextBox();
+            listView2 = new ListView();
+            columnHeader10 = new ColumnHeader();
+            columnHeader19 = new ColumnHeader();
+            columnHeader20 = new ColumnHeader();
+            columnHeader21 = new ColumnHeader();
+            label25 = new Label();
             panel1.SuspendLayout();
             panel6.SuspendLayout();
             panel5.SuspendLayout();
@@ -95,6 +115,9 @@
             panel7.SuspendLayout();
             panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
+            panel9.SuspendLayout();
+            panel10.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -218,6 +241,7 @@
             button4.TabIndex = 0;
             button4.Text = "         Product Categories";
             button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // button3
             // 
@@ -613,7 +637,6 @@
             button9.Size = new Size(41, 25);
             button9.TabIndex = 12;
             button9.UseVisualStyleBackColor = true;
-            button9.Click += button9_Click;
             // 
             // textBox1
             // 
@@ -622,6 +645,7 @@
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(180, 25);
             textBox1.TabIndex = 11;
+            textBox1.TextChanged += textBox1_TextChanged;
             // 
             // listView1
             // 
@@ -691,6 +715,209 @@
             label6.TabIndex = 9;
             label6.Text = "USER MANAGEMENT";
             // 
+            // panel9
+            // 
+            panel9.BorderStyle = BorderStyle.FixedSingle;
+            panel9.Controls.Add(panel10);
+            panel9.Controls.Add(button14);
+            panel9.Controls.Add(textBox12);
+            panel9.Controls.Add(listView2);
+            panel9.Controls.Add(label25);
+            panel9.Location = new Point(213, 62);
+            panel9.Name = "panel9";
+            panel9.Size = new Size(1245, 831);
+            panel9.TabIndex = 6;
+            panel9.Visible = false;
+            // 
+            // panel10
+            // 
+            panel10.BorderStyle = BorderStyle.FixedSingle;
+            panel10.Controls.Add(button15);
+            panel10.Controls.Add(label19);
+            panel10.Controls.Add(textBox7);
+            panel10.Controls.Add(label13);
+            panel10.Controls.Add(pictureBox4);
+            panel10.Controls.Add(button10);
+            panel10.Controls.Add(button13);
+            panel10.Controls.Add(label22);
+            panel10.Controls.Add(textBox10);
+            panel10.Controls.Add(label24);
+            panel10.Location = new Point(752, 13);
+            panel10.Name = "panel10";
+            panel10.Size = new Size(487, 712);
+            panel10.TabIndex = 13;
+            // 
+            // button15
+            // 
+            button15.BackColor = Color.FromArgb(9, 132, 227);
+            button15.FlatStyle = FlatStyle.Flat;
+            button15.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button15.Location = new Point(82, 495);
+            button15.Name = "button15";
+            button15.Size = new Size(344, 61);
+            button15.TabIndex = 40;
+            button15.Text = "Add";
+            button15.UseVisualStyleBackColor = false;
+            button15.Click += button15_Click;
+            // 
+            // label19
+            // 
+            label19.AutoSize = true;
+            label19.Location = new Point(21, 376);
+            label19.Name = "label19";
+            label19.Size = new Size(75, 15);
+            label19.TabIndex = 39;
+            label19.Text = "Description *";
+            // 
+            // textBox7
+            // 
+            textBox7.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox7.Location = new Point(21, 392);
+            textBox7.Multiline = true;
+            textBox7.Name = "textBox7";
+            textBox7.Size = new Size(445, 92);
+            textBox7.TabIndex = 38;
+            // 
+            // label13
+            // 
+            label13.AutoSize = true;
+            label13.Location = new Point(408, 229);
+            label13.Name = "label13";
+            label13.Size = new Size(68, 15);
+            label13.TabIndex = 37;
+            label13.Text = "category_id";
+            label13.Visible = false;
+            // 
+            // pictureBox4
+            // 
+            pictureBox4.BorderStyle = BorderStyle.FixedSingle;
+            pictureBox4.Image = Properties.Resources.jan_m_logo_removebg_preview;
+            pictureBox4.Location = new Point(126, 14);
+            pictureBox4.Name = "pictureBox4";
+            pictureBox4.Size = new Size(248, 228);
+            pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox4.TabIndex = 32;
+            pictureBox4.TabStop = false;
+            // 
+            // button10
+            // 
+            button10.BackColor = Color.FromArgb(255, 118, 117);
+            button10.FlatStyle = FlatStyle.Flat;
+            button10.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button10.ForeColor = Color.Black;
+            button10.Location = new Point(82, 629);
+            button10.Name = "button10";
+            button10.Size = new Size(344, 61);
+            button10.TabIndex = 31;
+            button10.Text = "Clear";
+            button10.UseVisualStyleBackColor = false;
+            button10.Click += button10_Click;
+            // 
+            // button13
+            // 
+            button13.BackColor = Color.FromArgb(129, 236, 236);
+            button13.FlatStyle = FlatStyle.Flat;
+            button13.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button13.Location = new Point(82, 562);
+            button13.Name = "button13";
+            button13.Size = new Size(344, 61);
+            button13.TabIndex = 30;
+            button13.Text = "Update";
+            button13.UseVisualStyleBackColor = false;
+            button13.Click += button13_Click;
+            // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.Location = new Point(21, 315);
+            label22.Name = "label22";
+            label22.Size = new Size(98, 15);
+            label22.TabIndex = 16;
+            label22.Text = "Category Name *";
+            // 
+            // textBox10
+            // 
+            textBox10.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox10.Location = new Point(21, 331);
+            textBox10.Name = "textBox10";
+            textBox10.Size = new Size(445, 27);
+            textBox10.TabIndex = 15;
+            // 
+            // label24
+            // 
+            label24.AutoSize = true;
+            label24.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label24.ForeColor = Color.Black;
+            label24.Location = new Point(172, 245);
+            label24.Name = "label24";
+            label24.Size = new Size(155, 25);
+            label24.TabIndex = 10;
+            label24.Text = "Category Details";
+            // 
+            // button14
+            // 
+            button14.FlatStyle = FlatStyle.Flat;
+            button14.Image = Properties.Resources.search;
+            button14.Location = new Point(706, 13);
+            button14.Name = "button14";
+            button14.Size = new Size(41, 25);
+            button14.TabIndex = 12;
+            button14.UseVisualStyleBackColor = true;
+            // 
+            // textBox12
+            // 
+            textBox12.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox12.Location = new Point(522, 13);
+            textBox12.Name = "textBox12";
+            textBox12.Size = new Size(180, 25);
+            textBox12.TabIndex = 11;
+            textBox12.TextChanged += textBox12_TextChanged;
+            // 
+            // listView2
+            // 
+            listView2.BackColor = Color.FromArgb(81, 172, 187);
+            listView2.Columns.AddRange(new ColumnHeader[] { columnHeader10, columnHeader19, columnHeader20, columnHeader21 });
+            listView2.FullRowSelect = true;
+            listView2.GridLines = true;
+            listView2.Location = new Point(9, 41);
+            listView2.Name = "listView2";
+            listView2.Size = new Size(738, 778);
+            listView2.TabIndex = 10;
+            listView2.UseCompatibleStateImageBehavior = false;
+            listView2.View = View.Details;
+            listView2.MouseClick += listView2_MouseClick;
+            // 
+            // columnHeader10
+            // 
+            columnHeader10.Text = "ID";
+            // 
+            // columnHeader19
+            // 
+            columnHeader19.Text = "Category Name";
+            columnHeader19.Width = 150;
+            // 
+            // columnHeader20
+            // 
+            columnHeader20.Text = "Description";
+            columnHeader20.Width = 250;
+            // 
+            // columnHeader21
+            // 
+            columnHeader21.Text = "Date Created";
+            columnHeader21.Width = 150;
+            // 
+            // label25
+            // 
+            label25.AutoSize = true;
+            label25.FlatStyle = FlatStyle.Flat;
+            label25.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label25.ForeColor = Color.Black;
+            label25.Location = new Point(9, 13);
+            label25.Name = "label25";
+            label25.Size = new Size(178, 21);
+            label25.TabIndex = 9;
+            label25.Text = "PRODUCT CATEGORIES";
+            // 
             // admin_dashboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -700,6 +927,7 @@
             Controls.Add(label3);
             Controls.Add(panel2);
             Controls.Add(panel1);
+            Controls.Add(panel9);
             Controls.Add(panel7);
             Controls.Add(panel3);
             FormBorderStyle = FormBorderStyle.None;
@@ -707,7 +935,6 @@
             Name = "admin_dashboard";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Administrator";
-            Load += admin_dashboard_Load;
             panel1.ResumeLayout(false);
             panel6.ResumeLayout(false);
             panel5.ResumeLayout(false);
@@ -724,6 +951,11 @@
             panel8.ResumeLayout(false);
             panel8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
+            panel9.ResumeLayout(false);
+            panel9.PerformLayout();
+            panel10.ResumeLayout(false);
+            panel10.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -785,5 +1017,25 @@
         public ComboBox comboBox1;
         public ComboBox comboBox2;
         public Label label18;
+        public Panel panel9;
+        private Panel panel10;
+        public Label label13;
+        private PictureBox pictureBox4;
+        private Button button10;
+        private Button button13;
+        private Label label22;
+        public TextBox textBox10;
+        private Label label24;
+        private Button button14;
+        private TextBox textBox12;
+        public ListView listView2;
+        public ColumnHeader columnHeader10;
+        private Label label25;
+        private ColumnHeader columnHeader19;
+        private ColumnHeader columnHeader20;
+        private ColumnHeader columnHeader21;
+        private Label label19;
+        public TextBox textBox7;
+        private Button button15;
     }
 }
