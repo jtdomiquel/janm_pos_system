@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("jandm_pos")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a20258eb0506a08d23a3a6c2c2ec297a0494817c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+feff0294e1ed3fa6f72c3f736cdb6d773524a1f4")]
 [assembly: System.Reflection.AssemblyProductAttribute("jandm_pos")]
 [assembly: System.Reflection.AssemblyTitleAttribute("jandm_pos")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

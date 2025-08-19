@@ -4,10 +4,14 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace jandm_pos.Forms
@@ -182,6 +186,11 @@ namespace jandm_pos.Forms
             if (admin_Dashboard.panel9.Visible)
             {
                 admin_Dashboard.panel9.Visible = false;
+            }
+
+            if (admin_Dashboard.panel11.Visible)
+            {
+                admin_Dashboard.panel11.Visible = false;
             }
         }
 
@@ -445,6 +454,114 @@ namespace jandm_pos.Forms
                 {
                     MessageBox.Show(ex.Message);
                 }
+            }
+        }
+
+        public void getProductCategoryToProductInventoryFormCB(admin_dashboard userForm)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+                string query = "SELECT id, category_name FROM product_category";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                DataTable dt = new DataTable();
+                dt.Load(reader);
+
+                // bind DataTable directly to ComboBox
+                userForm.comboBox3.DataSource = dt;
+                userForm.comboBox3.DisplayMember = "category_name"; // show category name
+                userForm.comboBox3.ValueMember = "id";     // save category ID
+                
+            }
+        }
+        
+
+        private string GenerateUniqueBarcode()
+        {
+            return "P" + DateTime.Now.ToString("yyyyMMddHHmmssfff"); // e.g., P20250816121030123
+        }
+
+        public void addNewProductInventory(admin_dashboard userForm)
+        {
+            string barcodeFolder = Path.Combine(Application.StartupPath, "barcodes");
+
+            string imgPath = userForm.textBox13.Text.Trim();
+            int productCategoryId = (int)userForm.comboBox3.SelectedValue;
+            string barcode = userForm.textBox14.Text.Trim();
+
+            if (string.IsNullOrEmpty(barcode))
+            {
+                barcode = GenerateUniqueBarcode();
+            }
+
+            string productName = userForm.textBox15.Text.Trim();
+            string descriptions = userForm.textBox8.Text.Trim();
+            decimal price = decimal.Parse(userForm.textBox17.Text);
+            int stockQuantity = int.Parse(userForm.textBox16.Text);
+            DateTime expiryDate = userForm.dateTimePicker1.Value;
+
+
+            using (var conn = Database.GetConnection())
+            {
+                try
+                {
+                    conn.Open();
+                    string query = @"INSERT INTO products
+                            (name, barcode, price, category_id, description, 
+                             stock_quantity, expiry_date, img_path, date_save)
+                            VALUES (@name, @barcode, @price, @categoryId, @description, 
+                                    @stockQuantity, @expiryDate, @imgPath, @dateSave)";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@name", productName);
+                        cmd.Parameters.AddWithValue("@barcode", barcode);
+                        cmd.Parameters.AddWithValue("@price", price);
+                        cmd.Parameters.AddWithValue("@categoryId", productCategoryId);
+                        cmd.Parameters.AddWithValue("@description", descriptions);
+                        cmd.Parameters.AddWithValue("@stockQuantity", stockQuantity);
+                        cmd.Parameters.AddWithValue("@expiryDate", expiryDate);
+                        cmd.Parameters.AddWithValue("@imgPath", imgPath);
+                        cmd.Parameters.AddWithValue("@dateSave", DateTime.Now);  // ✅ Direct DateTime
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("✅ Product added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            clearAddNewProductForm(userForm);
+                        }
+                        else
+                        {
+                            MessageBox.Show("⚠️ Failed to add product.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("❌ Error: " + ex.Message);
+                }
+            }
+        }
+
+        public void clearAddNewProductForm(admin_dashboard userForm)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                userForm.label15.Text = "";
+                userForm.textBox13.Text = "";
+                userForm.comboBox3.SelectedValue = "1";
+                userForm.textBox14.Text = "";
+                userForm.textBox15.Text = "";
+                userForm.textBox8.Text = "";
+                userForm.textBox17.Text = "";
+                userForm.textBox16.Text = "";
+                userForm.dateTimePicker1.Value = DateTime.Now;
+                userForm.pictureBox5.Image = Properties.Resources.no_image;
+
+
             }
         }
 

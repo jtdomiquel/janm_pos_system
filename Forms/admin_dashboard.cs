@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -194,6 +195,37 @@ namespace jandm_pos.Forms
             button13.BackColor = Color.Gray;
             updateProductCategory.displayCategoriesTble(listView2, "");
             clearCategoryForm();
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                textBox13.Text = ofd.FileName;
+                pictureBox5.ImageLocation = ofd.FileName; // preview image
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            functions_system showFuncPanel = new functions_system();
+            showFuncPanel.ShowFuncPanel(panel11);
+            showFuncPanel.getProductCategoryToProductInventoryFormCB(this);
+            textBox14.Focus();
+        }
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            functions_system showFuncPanel = new functions_system();
+            showFuncPanel.addNewProductInventory(this);
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            functions_system showFuncPanel = new functions_system();
+            showFuncPanel.clearAddNewProductForm(this);
         }
     }
 }
