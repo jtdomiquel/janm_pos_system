@@ -51,6 +51,7 @@
             pictureBox2 = new PictureBox();
             label3 = new Label();
             panel7 = new Panel();
+            label33 = new Label();
             panel8 = new Panel();
             label18 = new Label();
             label17 = new Label();
@@ -85,6 +86,7 @@
             columnHeader9 = new ColumnHeader();
             label6 = new Label();
             panel9 = new Panel();
+            label32 = new Label();
             panel10 = new Panel();
             button15 = new Button();
             label19 = new Label();
@@ -105,6 +107,7 @@
             columnHeader21 = new ColumnHeader();
             label25 = new Label();
             panel11 = new Panel();
+            label31 = new Label();
             panel12 = new Panel();
             textBox9 = new TextBox();
             comboBox3 = new ComboBox();
@@ -450,6 +453,7 @@
             // panel7
             // 
             panel7.BorderStyle = BorderStyle.FixedSingle;
+            panel7.Controls.Add(label33);
             panel7.Controls.Add(panel8);
             panel7.Controls.Add(button9);
             panel7.Controls.Add(textBox1);
@@ -460,6 +464,16 @@
             panel7.Size = new Size(1245, 831);
             panel7.TabIndex = 5;
             panel7.Visible = false;
+            // 
+            // label33
+            // 
+            label33.AutoSize = true;
+            label33.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label33.Location = new Point(618, 804);
+            label33.Name = "label33";
+            label33.Size = new Size(129, 15);
+            label33.TabIndex = 15;
+            label33.Text = "Click the table to select";
             // 
             // panel8
             // 
@@ -697,7 +711,7 @@
             listView1.GridLines = true;
             listView1.Location = new Point(9, 41);
             listView1.Name = "listView1";
-            listView1.Size = new Size(738, 778);
+            listView1.Size = new Size(738, 760);
             listView1.TabIndex = 10;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.View = View.Details;
@@ -760,6 +774,7 @@
             // panel9
             // 
             panel9.BorderStyle = BorderStyle.FixedSingle;
+            panel9.Controls.Add(label32);
             panel9.Controls.Add(panel10);
             panel9.Controls.Add(button14);
             panel9.Controls.Add(textBox12);
@@ -770,6 +785,16 @@
             panel9.Size = new Size(1245, 831);
             panel9.TabIndex = 6;
             panel9.Visible = false;
+            // 
+            // label32
+            // 
+            label32.AutoSize = true;
+            label32.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label32.Location = new Point(618, 808);
+            label32.Name = "label32";
+            label32.Size = new Size(129, 15);
+            label32.TabIndex = 15;
+            label32.Text = "Click the table to select";
             // 
             // panel10
             // 
@@ -923,7 +948,7 @@
             listView2.GridLines = true;
             listView2.Location = new Point(9, 41);
             listView2.Name = "listView2";
-            listView2.Size = new Size(738, 778);
+            listView2.Size = new Size(738, 764);
             listView2.TabIndex = 10;
             listView2.UseCompatibleStateImageBehavior = false;
             listView2.View = View.Details;
@@ -963,6 +988,7 @@
             // panel11
             // 
             panel11.BorderStyle = BorderStyle.FixedSingle;
+            panel11.Controls.Add(label31);
             panel11.Controls.Add(panel12);
             panel11.Controls.Add(button19);
             panel11.Controls.Add(textBox11);
@@ -973,6 +999,16 @@
             panel11.Size = new Size(1245, 831);
             panel11.TabIndex = 7;
             panel11.Visible = false;
+            // 
+            // label31
+            // 
+            label31.AutoSize = true;
+            label31.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label31.Location = new Point(618, 805);
+            label31.Name = "label31";
+            label31.Size = new Size(129, 15);
+            label31.TabIndex = 14;
+            label31.Text = "Click the table to select";
             // 
             // panel12
             // 
@@ -1056,6 +1092,7 @@
             textBox16.Name = "textBox16";
             textBox16.Size = new Size(218, 27);
             textBox16.TabIndex = 50;
+            textBox16.KeyPress += textBox16_KeyPress;
             // 
             // label29
             // 
@@ -1073,6 +1110,7 @@
             textBox17.Name = "textBox17";
             textBox17.Size = new Size(221, 27);
             textBox17.TabIndex = 48;
+            textBox17.KeyPress += textBox17_KeyPress;
             // 
             // label27
             // 
@@ -1132,9 +1170,9 @@
             label26.AutoSize = true;
             label26.Location = new Point(104, 295);
             label26.Name = "label26";
-            label26.Size = new Size(85, 15);
+            label26.Size = new Size(93, 15);
             label26.TabIndex = 41;
-            label26.Text = "Product Image";
+            label26.Text = "Product Image *";
             // 
             // button16
             // 
@@ -1213,6 +1251,7 @@
             button18.TabIndex = 30;
             button18.Text = "Update";
             button18.UseVisualStyleBackColor = false;
+            button18.Click += button18_Click;
             // 
             // label20
             // 
@@ -1240,6 +1279,7 @@
             textBox11.Name = "textBox11";
             textBox11.Size = new Size(180, 25);
             textBox11.TabIndex = 11;
+            textBox11.TextChanged += textBox11_TextChanged;
             // 
             // listView3
             // 
@@ -1249,10 +1289,11 @@
             listView3.GridLines = true;
             listView3.Location = new Point(9, 41);
             listView3.Name = "listView3";
-            listView3.Size = new Size(738, 778);
+            listView3.Size = new Size(738, 764);
             listView3.TabIndex = 10;
             listView3.UseCompatibleStateImageBehavior = false;
             listView3.View = View.Details;
+            listView3.MouseClick += listView3_MouseClick;
             // 
             // columnHeader11
             // 
@@ -1316,10 +1357,10 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.LightGreen;
             ClientSize = new Size(1470, 920);
-            Controls.Add(panel11);
             Controls.Add(label3);
             Controls.Add(panel2);
             Controls.Add(panel1);
+            Controls.Add(panel11);
             Controls.Add(panel9);
             Controls.Add(panel7);
             Controls.Add(panel3);
@@ -1473,5 +1514,8 @@
         private ColumnHeader columnHeader18;
         private ColumnHeader columnHeader22;
         public TextBox textBox9;
+        private Label label32;
+        private Label label31;
+        private Label label33;
     }
 }

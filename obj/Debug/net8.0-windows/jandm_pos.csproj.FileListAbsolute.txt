@@ -70,7 +70,6 @@ D:\JANM Pos System\jandm_pos\jandm_pos\bin\Debug\net8.0-windows\runtimes\win-x86
 D:\JANM Pos System\jandm_pos\jandm_pos\bin\Debug\net8.0-windows\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 D:\JANM Pos System\jandm_pos\jandm_pos\obj\Debug\net8.0-windows\jandm_pos.csproj.AssemblyReference.cache
 D:\JANM Pos System\jandm_pos\jandm_pos\obj\Debug\net8.0-windows\jandm_pos.Forms.admin_dashboard.resources
-D:\JANM Pos System\jandm_pos\jandm_pos\obj\Debug\net8.0-windows\jandm_pos.Forms.DashboardForm.resources
 D:\JANM Pos System\jandm_pos\jandm_pos\obj\Debug\net8.0-windows\jandm_pos.Forms.LoginForm.resources
 D:\JANM Pos System\jandm_pos\jandm_pos\obj\Debug\net8.0-windows\jandm_pos.Forms.SignUpForm.resources
 D:\JANM Pos System\jandm_pos\jandm_pos\obj\Debug\net8.0-windows\jandm_pos.Properties.Resources.resources

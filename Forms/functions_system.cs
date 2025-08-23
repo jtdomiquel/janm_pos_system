@@ -10,6 +10,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
@@ -564,6 +565,169 @@ namespace jandm_pos.Forms
 
             }
         }
+
+
+        public void ValidateLetters(KeyPressEventArgs e)
+        {
+            if (!(char.IsDigit(e.KeyChar) || e.KeyChar == ',' || e.KeyChar == '.') && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        public void searchProducts(ListView targetListView, string search)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+
+                string query = "SELECT * FROM products" +
+                    " INNER JOIN product_category ON products.`category_id` = product_category.`id` " +
+                    " WHERE products.`barcode` LIKE '" + search + "%' " +
+                    " OR products.`name` LIKE '" + search + "%' " +
+                    " OR products.`description` LIKE '" + search + "%' " +
+                    " OR products.`price` LIKE '" + search + "%' "+
+                    " OR product_category.`category_name` LIKE '" + search + "%' ";
+
+                MySqlDataAdapter dataAdapter = new MySqlDataAdapter(query, conn);
+                DataTable dataTable = new DataTable();
+                dataAdapter.Fill(dataTable);
+
+                targetListView.Items.Clear();
+
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    ListViewItem item = new ListViewItem(Convert.ToString(row[0]));
+                    item.SubItems.Add(Convert.ToString(row[2]));
+                    item.SubItems.Add(Convert.ToString(row[12]));
+                    item.SubItems.Add(Convert.ToString(row[3]));
+                    item.SubItems.Add(Convert.ToString(row[4]));
+                    item.SubItems.Add(Convert.ToString(row[5]));
+                    item.SubItems.Add(Convert.ToString(row[6]));
+                    item.SubItems.Add(Convert.ToString(row[7]));
+                    item.SubItems.Add(Convert.ToString(row[9]));
+
+                    targetListView.Items.Add(item);
+                }
+            }
+        }
+
+        public void getProductDetailsToForm(string productId, admin_dashboard userForm)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                string query = @"
+                   SELECT 
+                        products.product_id,
+                        products.name,
+                        products.barcode,
+                        products.description AS product_description,
+                        products.price,
+                        products.stock_quantity,
+                        products.expiry_date,
+                        products.img_path,
+                        product_category.id AS category_id,
+                        product_category.category_name AS category_name
+                    FROM products
+                    INNER JOIN product_category 
+                        ON products.category_id = product_category.id
+                    WHERE products.`product_id` = @prodId";
+
+                MySqlDataAdapter adapter = new MySqlDataAdapter(query, conn);
+                adapter.SelectCommand.Parameters.AddWithValue("@prodId", productId);
+
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                if (dt.Rows.Count > 0)
+                {
+                    userForm.label15.Text = dt.Rows[0]["product_id"].ToString();
+
+                    if (!string.IsNullOrEmpty(dt.Rows[0]["img_path"].ToString()))
+                    {
+                        userForm.pictureBox5.Image = Image.FromFile(dt.Rows[0]["img_path"].ToString());
+                    }
+                    else
+                    {
+                        userForm.pictureBox5.Image = Properties.Resources.no_image;
+                    }
+
+                    userForm.comboBox3.Text = dt.Rows[0]["category_name"].ToString();   
+                    userForm.textBox14.Text = dt.Rows[0]["barcode"].ToString();
+                    userForm.textBox15.Text = dt.Rows[0]["name"].ToString();
+                    userForm.textBox8.Text = dt.Rows[0]["product_description"].ToString();
+                    userForm.textBox17.Text = dt.Rows[0]["price"].ToString();
+                    userForm.textBox16.Text = dt.Rows[0]["stock_quantity"].ToString();
+                    userForm.dateTimePicker1.Value = Convert.ToDateTime(dt.Rows[0]["expiry_date"]);
+
+                }
+            }
+        }
+
+        public void updateProductDetails(admin_dashboard userForm)
+        {
+            string productId = userForm.label15.Text.Trim();
+            string barcodeFolder = Path.Combine(Application.StartupPath, "barcodes");
+
+            string imgPath = userForm.textBox13.Text.Trim();
+            int productCategoryId = (int)userForm.comboBox3.SelectedValue;
+            string barcode = userForm.textBox14.Text.Trim();
+
+            if (string.IsNullOrEmpty(barcode))
+            {
+                barcode = GenerateUniqueBarcode();
+            }
+
+            string productName = userForm.textBox15.Text.Trim();
+            string descriptions = userForm.textBox8.Text.Trim();
+            decimal price = decimal.Parse(userForm.textBox17.Text);
+            int stockQuantity = int.Parse(userForm.textBox16.Text);
+            DateTime expiryDate = userForm.dateTimePicker1.Value;
+
+            using (var conn = Database.GetConnection())
+            {
+                string sql = @"UPDATE products 
+                       SET category_id = @category_id, 
+                           barcode = @barcode, 
+                           name = @name, 
+                           description = @description, 
+                           price = @price, 
+                           stock_quantity = @stock_quantity, 
+                           expiry_date = @expiry_date, 
+                           img_path = @img_path
+                       WHERE product_id = @prodId";
+
+                try
+                {
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@category_id", productCategoryId);
+                        cmd.Parameters.AddWithValue("@barcode", barcode);
+                        cmd.Parameters.AddWithValue("@name", productName);
+                        cmd.Parameters.AddWithValue("@description", descriptions);
+                        cmd.Parameters.AddWithValue("@price", price);
+                        cmd.Parameters.AddWithValue("@stock_quantity", stockQuantity);
+                        cmd.Parameters.AddWithValue("@expiry_date", expiryDate);
+                        cmd.Parameters.AddWithValue("@img_path", imgPath);
+                        cmd.Parameters.AddWithValue("@prodId", productId);
+
+                        conn.Open();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("✅ Product Updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            clearAddNewProductForm(userForm);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
 
     }
 }
