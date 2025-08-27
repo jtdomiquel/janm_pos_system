@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using static jandm_pos.Forms.cashier_dashboard;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace jandm_pos.Forms
@@ -80,7 +82,7 @@ namespace jandm_pos.Forms
             }
         }
 
-        public void login_user(string username, string password)
+        public void login_user(string username, string password, LoginForm loginForm)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
@@ -93,7 +95,7 @@ namespace jandm_pos.Forms
                 conn.Open();
 
                 string query = @"
-                SELECT role, is_active 
+                SELECT user_id, role, is_active, firstname, middlename, lastname 
                 FROM users 
                 WHERE username = @username 
                 AND password_hash = SHA2(@password, 256)";
@@ -118,14 +120,25 @@ namespace jandm_pos.Forms
 
                             if (role == "Admin")
                             {
-                                
+                                loginForm.Hide();
                                 admin_dashboard admin = new admin_dashboard();
+                                admin.label34.Text = reader["user_id"].ToString();
+                                admin.label4.Text = reader["firstname"].ToString();
+                                admin.label1.Text = reader["lastname"].ToString();
+                                admin.label2.Text = reader["role"].ToString();
                                 admin.Show();
                                 
                             }
                             else if (role == "Cashier")
                             {
-                                MessageBox.Show("Cashier Dashboard!!");
+                                loginForm.Hide();
+                                cashier_dashboard cashier = new cashier_dashboard();
+                                cashier.label34.Text = reader["user_id"].ToString();
+                                cashier.label4.Text = reader["firstname"].ToString();
+                                cashier.label1.Text = reader["lastname"].ToString();
+                                cashier.label2.Text = reader["role"].ToString();
+
+                                cashier.Show();
                             }
                             else
                             {
@@ -193,6 +206,11 @@ namespace jandm_pos.Forms
             {
                 admin_Dashboard.panel11.Visible = false;
             }
+
+            if (admin_Dashboard.panel13.Visible)
+            {
+                admin_Dashboard.panel13.Visible = false;
+            }
         }
 
         public void ShowFuncPanel(Panel submenu)
@@ -209,7 +227,32 @@ namespace jandm_pos.Forms
             }
         }
 
-        
+
+        public void HideFuncPanelCashier()
+        {
+            cashier_dashboard cashier_Dashboard = new cashier_dashboard();
+
+            if (cashier_Dashboard.panel11.Visible)
+            {
+                cashier_Dashboard.panel11.Visible = false;
+            }
+        }
+
+
+        public void ShowFuncPanelCashier(Panel submenu)
+        {
+            if (!submenu.Visible)
+            {
+                HideFuncPanelCashier();
+                submenu.Visible = true;
+                submenu.BringToFront();
+            }
+            else
+            {
+                submenu.Visible = false;
+            }
+        }
+
         public void searchUsers(ListView targetListView, string search)
         {
             using (var conn = Database.GetConnection())
@@ -342,7 +385,7 @@ namespace jandm_pos.Forms
 
             if (string.IsNullOrEmpty(categoryName) || string.IsNullOrEmpty(description))
             {
-                MessageBox.Show("Please fill in all required fields.");
+                MessageBox.Show("⚠️ Please fill in all required fields.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
        
@@ -373,6 +416,42 @@ namespace jandm_pos.Forms
 
         }
 
+        public void add_new_productUnit(string unitName, string description)
+        {
+
+            if (string.IsNullOrEmpty(unitName))
+            {
+                MessageBox.Show("⚠️ Please fill in all required fields.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+                string query = @"INSERT INTO product_unit 
+                                (unit, description, date_save) 
+                                VALUES (@unit_name, @description, @date_save)";
+                using (var cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@unit_name", unitName);
+                    cmd.Parameters.AddWithValue("@description", description);
+                    cmd.Parameters.AddWithValue("@date_save", DateTime.Now);
+
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("✅ Product Unit added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: " + ex.Message);
+                    }
+                }
+            }
+
+        }
+
         public void displayCategoriesTble(ListView targetListView, string search)
         {
             using (var conn = Database.GetConnection())
@@ -380,6 +459,33 @@ namespace jandm_pos.Forms
                 conn.Open();
                 string query = "SELECT * FROM product_category"+
                     " WHERE `category_name` LIKE '" + search + "%' " +
+                    " OR `description` LIKE '" + search + "%' ";
+
+                MySqlDataAdapter dataAdapter = new MySqlDataAdapter(query, conn);
+                DataTable dataTable = new DataTable();
+                dataAdapter.Fill(dataTable);
+
+                targetListView.Items.Clear();
+
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    ListViewItem item = new ListViewItem(Convert.ToString(row[0]));
+                    item.SubItems.Add(Convert.ToString(row[1]));
+                    item.SubItems.Add(Convert.ToString(row[2]));
+                    item.SubItems.Add(Convert.ToString(row[3]));
+
+                    targetListView.Items.Add(item);
+                }
+            }
+        }
+
+        public void displayUnitTble(ListView targetListView, string search)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+                string query = "SELECT * FROM product_unit" +
+                    " WHERE `unit` LIKE '" + search + "%' " +
                     " OR `description` LIKE '" + search + "%' ";
 
                 MySqlDataAdapter dataAdapter = new MySqlDataAdapter(query, conn);
@@ -424,6 +530,30 @@ namespace jandm_pos.Forms
             }
         }
 
+        public void getUnitDetailsToForm(string unitId, admin_dashboard userForm)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                string query = @"
+                SELECT * FROM `product_unit`
+                WHERE product_unit.`id` = @unitId";
+
+                MySqlDataAdapter adapter = new MySqlDataAdapter(query, conn);
+                adapter.SelectCommand.Parameters.AddWithValue("@unitId", unitId);
+
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                if (dt.Rows.Count > 0)
+                {
+                    userForm.label37.Text = dt.Rows[0][0].ToString();
+                    userForm.textBox19.Text = dt.Rows[0][1].ToString();
+                    userForm.textBox18.Text = dt.Rows[0][2].ToString();
+
+                }
+            }
+        }
+
         public void updateProductCategoryDetails(string prodId, string categoryName, string description)
         {
 
@@ -458,6 +588,40 @@ namespace jandm_pos.Forms
             }
         }
 
+        public void updateProductUnitDetails(string unitId, string unitName, string description)
+        {
+
+            using (var conn = Database.GetConnection())
+            {
+                string sql = @"UPDATE product_unit 
+                       SET unit = @unit_name, 
+                           description = @description
+                       WHERE id = @unitId";
+
+                try
+                {
+                    using (MySqlCommand cmd = new MySqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@unit_name", unitName);
+                        cmd.Parameters.AddWithValue("@description", description);
+                        cmd.Parameters.AddWithValue("@unitId", unitId);
+
+                        conn.Open();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("✅ Product unit updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
         public void getProductCategoryToProductInventoryFormCB(admin_dashboard userForm)
         {
             using (var conn = Database.GetConnection())
@@ -477,7 +641,29 @@ namespace jandm_pos.Forms
                 
             }
         }
-        
+
+        public void getProductUnitToProductInventoryFormCB(admin_dashboard userForm)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+                string query = "SELECT id, unit FROM product_unit";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                DataTable dt = new DataTable();
+                dt.Load(reader);
+
+                // bind DataTable directly to ComboBox
+                userForm.comboBox4.DataSource = dt;
+                userForm.comboBox4.DisplayMember = "unit"; // show category name
+                userForm.comboBox4.ValueMember = "id";     // save category ID
+
+            }
+        }
+
+
+
 
         private string GenerateUniqueBarcode()
         {
@@ -490,6 +676,7 @@ namespace jandm_pos.Forms
 
             string imgPath = userForm.textBox13.Text.Trim();
             int productCategoryId = (int)userForm.comboBox3.SelectedValue;
+            int productUnitId = (int)userForm.comboBox4.SelectedValue;
             string barcode = userForm.textBox14.Text.Trim();
 
             if (string.IsNullOrEmpty(barcode))
@@ -500,7 +687,7 @@ namespace jandm_pos.Forms
             string productName = userForm.textBox15.Text.Trim();
             string descriptions = userForm.textBox8.Text.Trim();
             decimal price = decimal.Parse(userForm.textBox17.Text);
-            int stockQuantity = int.Parse(userForm.textBox16.Text);
+            decimal stockQuantity = decimal.Parse(userForm.textBox16.Text);
             DateTime expiryDate = userForm.dateTimePicker1.Value;
 
 
@@ -510,9 +697,9 @@ namespace jandm_pos.Forms
                 {
                     conn.Open();
                     string query = @"INSERT INTO products
-                            (name, barcode, price, category_id, description, 
+                            (name, barcode, price, category_id, unit_id, description, 
                              stock_quantity, expiry_date, img_path, date_save)
-                            VALUES (@name, @barcode, @price, @categoryId, @description, 
+                            VALUES (@name, @barcode, @price, @categoryId, @unitId, @description, 
                                     @stockQuantity, @expiryDate, @imgPath, @dateSave)";
 
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -521,6 +708,7 @@ namespace jandm_pos.Forms
                         cmd.Parameters.AddWithValue("@barcode", barcode);
                         cmd.Parameters.AddWithValue("@price", price);
                         cmd.Parameters.AddWithValue("@categoryId", productCategoryId);
+                        cmd.Parameters.AddWithValue("@unitId", productUnitId);
                         cmd.Parameters.AddWithValue("@description", descriptions);
                         cmd.Parameters.AddWithValue("@stockQuantity", stockQuantity);
                         cmd.Parameters.AddWithValue("@expiryDate", expiryDate);
@@ -583,10 +771,12 @@ namespace jandm_pos.Forms
 
                 string query = "SELECT * FROM products" +
                     " INNER JOIN product_category ON products.`category_id` = product_category.`id` " +
+                    " INNER JOIN product_unit ON products.`unit_id` = product_unit.`id` " +
                     " WHERE products.`barcode` LIKE '" + search + "%' " +
                     " OR products.`name` LIKE '" + search + "%' " +
                     " OR products.`description` LIKE '" + search + "%' " +
-                    " OR products.`price` LIKE '" + search + "%' "+
+                    " OR products.`price` LIKE '" + search + "%' " +
+                    " OR product_unit.`unit` LIKE '" + search + "%' " +
                     " OR product_category.`category_name` LIKE '" + search + "%' ";
 
                 MySqlDataAdapter dataAdapter = new MySqlDataAdapter(query, conn);
@@ -598,14 +788,15 @@ namespace jandm_pos.Forms
                 foreach (DataRow row in dataTable.Rows)
                 {
                     ListViewItem item = new ListViewItem(Convert.ToString(row[0]));
-                    item.SubItems.Add(Convert.ToString(row[2]));
-                    item.SubItems.Add(Convert.ToString(row[12]));
                     item.SubItems.Add(Convert.ToString(row[3]));
                     item.SubItems.Add(Convert.ToString(row[4]));
-                    item.SubItems.Add(Convert.ToString(row[5]));
+                    item.SubItems.Add(Convert.ToString(row[13]));
+                    item.SubItems.Add(Convert.ToString(row[18]));
                     item.SubItems.Add(Convert.ToString(row[6]));
                     item.SubItems.Add(Convert.ToString(row[7]));
-                    item.SubItems.Add(Convert.ToString(row[9]));
+                    item.SubItems.Add(Convert.ToString(row[5]));
+                    item.SubItems.Add(Convert.ToString(row[8]));
+                    item.SubItems.Add(Convert.ToString(row[10]));
 
                     targetListView.Items.Add(item);
                 }
@@ -627,10 +818,14 @@ namespace jandm_pos.Forms
                         products.expiry_date,
                         products.img_path,
                         product_category.id AS category_id,
-                        product_category.category_name AS category_name
+                        product_category.category_name AS category_name,
+                        product_unit.id AS unit_id,
+                        product_unit.unit AS unit
                     FROM products
                     INNER JOIN product_category 
                         ON products.category_id = product_category.id
+                    INNER JOIN product_unit 
+                        ON products.unit_id = product_unit.id
                     WHERE products.`product_id` = @prodId";
 
                 MySqlDataAdapter adapter = new MySqlDataAdapter(query, conn);
@@ -652,13 +847,15 @@ namespace jandm_pos.Forms
                         userForm.pictureBox5.Image = Properties.Resources.no_image;
                     }
 
-                    userForm.comboBox3.Text = dt.Rows[0]["category_name"].ToString();   
+                    userForm.comboBox3.Text = dt.Rows[0]["category_name"].ToString();
+                    userForm.comboBox4.Text = dt.Rows[0]["unit"].ToString();
                     userForm.textBox14.Text = dt.Rows[0]["barcode"].ToString();
                     userForm.textBox15.Text = dt.Rows[0]["name"].ToString();
                     userForm.textBox8.Text = dt.Rows[0]["product_description"].ToString();
                     userForm.textBox17.Text = dt.Rows[0]["price"].ToString();
                     userForm.textBox16.Text = dt.Rows[0]["stock_quantity"].ToString();
                     userForm.dateTimePicker1.Value = Convert.ToDateTime(dt.Rows[0]["expiry_date"]);
+                    userForm.textBox13.Text = dt.Rows[0]["img_path"].ToString();
 
                 }
             }
@@ -671,6 +868,7 @@ namespace jandm_pos.Forms
 
             string imgPath = userForm.textBox13.Text.Trim();
             int productCategoryId = (int)userForm.comboBox3.SelectedValue;
+            int productUnitId = (int)userForm.comboBox4.SelectedValue;
             string barcode = userForm.textBox14.Text.Trim();
 
             if (string.IsNullOrEmpty(barcode))
@@ -681,13 +879,14 @@ namespace jandm_pos.Forms
             string productName = userForm.textBox15.Text.Trim();
             string descriptions = userForm.textBox8.Text.Trim();
             decimal price = decimal.Parse(userForm.textBox17.Text);
-            int stockQuantity = int.Parse(userForm.textBox16.Text);
+            decimal stockQuantity = decimal.Parse(userForm.textBox16.Text);
             DateTime expiryDate = userForm.dateTimePicker1.Value;
 
             using (var conn = Database.GetConnection())
             {
                 string sql = @"UPDATE products 
-                       SET category_id = @category_id, 
+                       SET category_id = @category_id,
+                           unit_id = @unit_id,
                            barcode = @barcode, 
                            name = @name, 
                            description = @description, 
@@ -702,6 +901,7 @@ namespace jandm_pos.Forms
                     using (MySqlCommand cmd = new MySqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@category_id", productCategoryId);
+                        cmd.Parameters.AddWithValue("@unit_id", productUnitId);
                         cmd.Parameters.AddWithValue("@barcode", barcode);
                         cmd.Parameters.AddWithValue("@name", productName);
                         cmd.Parameters.AddWithValue("@description", descriptions);
@@ -726,6 +926,212 @@ namespace jandm_pos.Forms
                     MessageBox.Show(ex.Message);
                 }
             }
+        }
+
+        public void logOutUser(string userId, Form currentForm)
+        {
+            // Close or hide the current form
+            currentForm.Hide();   // or currentForm.Close();
+
+            // Show login form again
+            LoginForm login = new LoginForm();
+            login.Show();
+        }
+
+
+        public void add_new_productInPendingTransaction(int userId, string barcode, decimal quantity, decimal price)
+        {
+
+            if (string.IsNullOrEmpty(barcode))
+            {
+                MessageBox.Show("⚠️ Barcode required.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            decimal totalPrice = quantity * price;
+
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+                string query = @"INSERT INTO pending_transactions 
+                                (user_id, barcode, quantity, price, total_price, date_save) 
+                                VALUES (@userId, @barcode, @quantity, @price, @totalPrice, @dateSave)";
+                using (var cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@userId", userId);
+                    cmd.Parameters.AddWithValue("@barcode", barcode);
+                    cmd.Parameters.AddWithValue("@quantity", quantity);
+                    cmd.Parameters.AddWithValue("@price", price);
+                    cmd.Parameters.AddWithValue("@totalPrice", totalPrice);
+                    cmd.Parameters.AddWithValue("@dateSave", DateTime.Now);
+
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: " + ex.Message);
+                    }
+                }
+            }
+
+        }
+
+        public void display_pending_transactions_cashier(DataGridView dgv)
+        {
+            using (var conn = Database.GetConnection()) 
+            {
+                string query = @"
+                           SELECT 
+                             pending_transactions.barcode,
+                             pending_transactions.quantity,
+                             pending_transactions.price as transaction_price,
+                             pending_transactions.total_price,
+                             pending_transactions.date_save as transaction_data_save,
+                             products.name,
+                             products.price,
+                             products.stock_quantity,
+                             products.expiry_date,
+                             products.img_path,
+                             product_unit.unit
+                         FROM pending_transactions
+                         INNER JOIN products 
+                             ON pending_transactions.barcode = products.barcode
+                         INNER JOIN product_unit ON products.`unit_id` = product_unit.`id`
+                          ORDER BY transaction_data_save DESC";
+                MySqlDataAdapter da = new MySqlDataAdapter(query, conn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                dgv.Rows.Clear();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    Image img = null;
+                    string imgPath = row["img_path"].ToString();
+
+                    if (File.Exists(imgPath))
+                    {
+                        img = Image.FromFile(imgPath);
+                    }
+
+                    dgv.Rows.Add(
+                        img,
+                        row["barcode"].ToString(),
+                        row["quantity"].ToString(),
+                        row["unit"].ToString(),
+                        row["name"].ToString(),
+                        row["transaction_price"].ToString(),
+                        row["total_price"].ToString()
+
+                    );
+                }
+
+            }
+        }
+
+
+        public void getProductDetailsToFormCashier(string barcode, cashier_dashboard userForm)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                string query = @"
+                   SELECT 
+                        products.product_id,
+                        products.name,
+                        products.barcode,
+                        products.price,
+                        products.img_path,
+                        product_category.id AS category_id,
+                        product_category.category_name AS category_name,
+                        product_unit.id AS unit_id,
+                        product_unit.unit AS unit
+                    FROM products
+                    INNER JOIN product_category 
+                        ON products.category_id = product_category.id
+                    INNER JOIN product_unit 
+                        ON products.unit_id = product_unit.id
+                    WHERE products.`barcode` = @barcode";
+
+                MySqlDataAdapter adapter = new MySqlDataAdapter(query, conn);
+                adapter.SelectCommand.Parameters.AddWithValue("@barcode", barcode);
+
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                if (dt.Rows.Count > 0)
+                {
+                    decimal price;
+                    if (Convert.IsDBNull(dt.Rows[0]["price"]))
+                    {
+                        price = 0; // Or whatever default you want
+                    }
+                    else
+                    {
+                        price = (decimal)dt.Rows[0]["price"];
+                    }
+
+                    userForm.label7.Text = dt.Rows[0]["name"].ToString();
+                    userForm.label17.Text = price.ToString("N2");
+                    if (!string.IsNullOrEmpty(dt.Rows[0]["img_path"].ToString()))
+                    {
+                        userForm.pictureBox5.Image = Image.FromFile(dt.Rows[0]["img_path"].ToString());
+                    }
+                    else
+                    {
+                        userForm.pictureBox5.Image = Properties.Resources.no_image;
+                    }
+
+
+                }
+            }
+        }
+
+        public void getTotalAmountPendingTransactionCashier(cashier_dashboard userForm)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                string query = @"
+                   SELECT SUM(total_price) as totalAmount, SUM(quantity) as totalItem FROM pending_transactions";
+
+                MySqlDataAdapter adapter = new MySqlDataAdapter(query, conn);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                if (dt.Rows.Count > 0)
+                {
+                    decimal totalamount;
+                    if (Convert.IsDBNull(dt.Rows[0]["totalAmount"]))
+                    {
+                        totalamount = 0; // Or whatever default you want
+                    }
+                    else
+                    {
+                        totalamount = (decimal)dt.Rows[0]["totalAmount"];
+                    }
+
+                    decimal totalItem;
+                    if (Convert.IsDBNull(dt.Rows[0]["totalItem"]))
+                    {
+                        totalItem = 0; // Or whatever default you want
+                    }
+                    else
+                    {
+                        totalItem = (decimal)dt.Rows[0]["totalItem"];
+                    }
+                    userForm.textBox2.Text = totalamount.ToString("N2");
+                    userForm.textBox3.Text = totalamount.ToString("N2");
+                    userForm.textBox4.Text = totalItem.ToString("N0");
+
+                }
+            }
+        }
+
+        public void clearCashierFormTransaction(cashier_dashboard useForm) 
+        {
+            useForm.textBox1.Clear();
+            useForm.textBox1.Focus();
         }
 
 

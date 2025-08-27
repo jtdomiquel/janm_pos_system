@@ -226,17 +226,15 @@ namespace jandm_pos.Forms
         private void button5_Click(object sender, EventArgs e)
         {
             functions_system showFuncPanel = new functions_system();
-            showFuncPanel.ShowFuncPanel(panel11);
-            showFuncPanel.getProductCategoryToProductInventoryFormCB(this);
-            showFuncPanel.searchProducts(listView3, "");
-            textBox14.Focus();
+            showFuncPanel.ShowFuncPanel(panel13);
+            showFuncPanel.displayUnitTble(listView4, "");
 
-            button16.Enabled = true;
-            button18.Enabled = false;
-            button17.Enabled = true;
+            button22.Enabled = true;
+            button24.Enabled = false;
+            button23.Enabled = true;
 
-            button18.BackColor = Color.Gray;
-            button16.BackColor = Color.FromArgb(9, 132, 227);
+            button22.BackColor = Color.FromArgb(9, 132, 227);
+            button24.BackColor = Color.Gray;
 
         }
 
@@ -244,6 +242,7 @@ namespace jandm_pos.Forms
         {
             if (textBox13.Text == "" || comboBox3.Text == "" || textBox15.Text == "" || textBox8.Text == "" || textBox17.Text == "" || textBox16.Text == "" || dateTimePicker1.Value.Date <= DateTime.Now.Date)
             {
+                textBox14.Focus();
                 MessageBox.Show("⚠️ Fill up the form properly.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
@@ -251,6 +250,7 @@ namespace jandm_pos.Forms
                 functions_system showFuncPanel = new functions_system();
                 showFuncPanel.addNewProductInventory(this);
                 showFuncPanel.searchProducts(listView3, "");
+                textBox14.Focus();
             }
 
         }
@@ -259,6 +259,7 @@ namespace jandm_pos.Forms
         {
             functions_system showFuncPanel = new functions_system();
             showFuncPanel.clearAddNewProductForm(this);
+            textBox14.Focus();
 
             button16.Enabled = true;
             button18.Enabled = false;
@@ -305,9 +306,10 @@ namespace jandm_pos.Forms
 
         private void button18_Click(object sender, EventArgs e)
         {
-            if (textBox13.Text == "" || comboBox3.Text == "" || textBox15.Text == "" || textBox8.Text == "" || textBox17.Text == "" 
-                || textBox16.Text == "" || dateTimePicker1.Value.Date <= DateTime.Now.Date || label15.Text == "" || label15.Text == "product_id")
+            if (comboBox3.Text == "" || comboBox4.Text == "" || textBox15.Text == "" || textBox8.Text == "" || textBox17.Text == ""
+                || textBox16.Text == "" || label15.Text == "" || label15.Text == "product_id")
             {
+                textBox14.Focus();
                 MessageBox.Show("⚠️ Fill up the form properly.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
@@ -324,7 +326,125 @@ namespace jandm_pos.Forms
 
                 updateProductInfo.searchProducts(listView3, "");
                 updateProductInfo.clearAddNewProductForm(this);
+                textBox14.Focus();
             }
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to LOGOUT ??",
+                    "DONE",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning) == DialogResult.OK)
+            {
+                string userId = label34.Text;
+                functions_system logOutUser = new functions_system();
+                logOutUser.logOutUser(userId, this);
+            }
+
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            functions_system showFuncPanel = new functions_system();
+            showFuncPanel.ShowFuncPanel(panel11);
+            showFuncPanel.getProductCategoryToProductInventoryFormCB(this);
+            showFuncPanel.getProductUnitToProductInventoryFormCB(this);
+            showFuncPanel.searchProducts(listView3, "");
+            textBox14.Focus();
+
+            button16.Enabled = true;
+            button18.Enabled = false;
+            button17.Enabled = true;
+
+            button18.BackColor = Color.Gray;
+            button16.BackColor = Color.FromArgb(9, 132, 227);
+        }
+
+        private void listView4_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (listView4.SelectedItems.Count > 0)
+            {
+                string id = listView4.SelectedItems[0].SubItems[0].Text;
+                functions_system getUser = new functions_system();
+                getUser.getUnitDetailsToForm(id, this);
+            }
+            button22.Enabled = false;
+            button24.Enabled = true;
+            button23.Enabled = true;
+
+            button22.BackColor = Color.Gray;
+            button24.BackColor = Color.FromArgb(129, 236, 236);
+        }
+
+        private void button23_Click(object sender, EventArgs e)
+        {
+            clearUnitForm();
+            button22.Enabled = true;
+            button24.Enabled = false;
+            button23.Enabled = true;
+
+            button22.BackColor = Color.FromArgb(9, 132, 227);
+            button24.BackColor = Color.Gray;
+        }
+
+        public void clearUnitForm()
+        {
+            label37.Text = "";
+            textBox19.Text = "";
+            textBox18.Text = "";
+        }
+
+        private void button22_Click(object sender, EventArgs e)
+        {
+            if (textBox19.Text == "")
+            {
+                MessageBox.Show("⚠️ Fill up the form properly.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                string unitName = textBox19.Text;
+                string description = textBox18.Text;
+
+                functions_system addCategory = new functions_system();
+                addCategory.add_new_productUnit(unitName, description);
+                addCategory.displayUnitTble(listView4, "");
+                clearUnitForm();
+            }
+        }
+
+        private void button24_Click(object sender, EventArgs e)
+        {
+            if (textBox19.Text == "" || textBox18.Text == "" || label37.Text == "" || label37.Text == "unit_id")
+            {
+                MessageBox.Show("⚠️ Fill up the form properly.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                string unitId = label37.Text;
+                string unitName = textBox19.Text;
+                string description = textBox18.Text;
+                functions_system updateProductUnit = new functions_system();
+                updateProductUnit.updateProductUnitDetails(unitId, unitName, description);
+
+                button22.Enabled = true;
+                button24.Enabled = false;
+                button23.Enabled = true;
+
+                button22.BackColor = Color.FromArgb(9, 132, 227);
+                button24.BackColor = Color.Gray;
+                updateProductUnit.displayUnitTble(listView4, "");
+                clearUnitForm();
+            }
+        }
+
+        private void textBox20_TextChanged(object sender, EventArgs e)
+        {
+            string search = textBox20.Text;
+            functions_system searchUnit = new functions_system();
+            searchUnit.displayUnitTble(listView4, search);
+        }
+
+
     }
 }

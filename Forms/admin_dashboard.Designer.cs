@@ -35,11 +35,13 @@
             button7 = new Button();
             button8 = new Button();
             panel5 = new Panel();
+            button21 = new Button();
             button5 = new Button();
             button4 = new Button();
             button3 = new Button();
             button1 = new Button();
             panel4 = new Panel();
+            label34 = new Label();
             label2 = new Label();
             label1 = new Label();
             label4 = new Label();
@@ -109,6 +111,8 @@
             panel11 = new Panel();
             label31 = new Label();
             panel12 = new Panel();
+            comboBox4 = new ComboBox();
+            label41 = new Label();
             textBox9 = new TextBox();
             comboBox3 = new ComboBox();
             dateTimePicker1 = new DateTimePicker();
@@ -139,12 +143,34 @@
             columnHeader16 = new ColumnHeader();
             columnHeader12 = new ColumnHeader();
             columnHeader13 = new ColumnHeader();
-            columnHeader15 = new ColumnHeader();
             columnHeader17 = new ColumnHeader();
             columnHeader18 = new ColumnHeader();
+            columnHeader27 = new ColumnHeader();
+            columnHeader15 = new ColumnHeader();
             columnHeader22 = new ColumnHeader();
             columnHeader14 = new ColumnHeader();
             label23 = new Label();
+            panel13 = new Panel();
+            label35 = new Label();
+            panel14 = new Panel();
+            button22 = new Button();
+            label36 = new Label();
+            textBox18 = new TextBox();
+            label37 = new Label();
+            pictureBox6 = new PictureBox();
+            button23 = new Button();
+            button24 = new Button();
+            label38 = new Label();
+            textBox19 = new TextBox();
+            label39 = new Label();
+            button25 = new Button();
+            textBox20 = new TextBox();
+            listView4 = new ListView();
+            columnHeader23 = new ColumnHeader();
+            columnHeader24 = new ColumnHeader();
+            columnHeader25 = new ColumnHeader();
+            columnHeader26 = new ColumnHeader();
+            label40 = new Label();
             panel1.SuspendLayout();
             panel6.SuspendLayout();
             panel5.SuspendLayout();
@@ -162,6 +188,9 @@
             panel11.SuspendLayout();
             panel12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
+            panel13.SuspendLayout();
+            panel14.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -187,7 +216,7 @@
             panel6.Controls.Add(button6);
             panel6.Controls.Add(button7);
             panel6.Dock = DockStyle.Top;
-            panel6.Location = new Point(0, 528);
+            panel6.Location = new Point(0, 583);
             panel6.Name = "panel6";
             panel6.Size = new Size(205, 110);
             panel6.TabIndex = 5;
@@ -233,7 +262,7 @@
             button8.ForeColor = SystemColors.Control;
             button8.Image = Properties.Resources.sales_report;
             button8.ImageAlign = ContentAlignment.MiddleLeft;
-            button8.Location = new Point(0, 477);
+            button8.Location = new Point(0, 532);
             button8.Name = "button8";
             button8.Size = new Size(205, 51);
             button8.TabIndex = 4;
@@ -245,14 +274,32 @@
             // 
             // panel5
             // 
+            panel5.Controls.Add(button21);
             panel5.Controls.Add(button5);
             panel5.Controls.Add(button4);
             panel5.Dock = DockStyle.Top;
             panel5.Location = new Point(0, 368);
             panel5.Name = "panel5";
-            panel5.Size = new Size(205, 109);
+            panel5.Size = new Size(205, 164);
             panel5.TabIndex = 3;
             panel5.Visible = false;
+            // 
+            // button21
+            // 
+            button21.Dock = DockStyle.Top;
+            button21.FlatAppearance.BorderSize = 0;
+            button21.FlatStyle = FlatStyle.Flat;
+            button21.ForeColor = SystemColors.Control;
+            button21.Image = Properties.Resources.product_management;
+            button21.ImageAlign = ContentAlignment.MiddleLeft;
+            button21.Location = new Point(0, 100);
+            button21.Name = "button21";
+            button21.Padding = new Padding(40, 0, 0, 0);
+            button21.Size = new Size(205, 50);
+            button21.TabIndex = 2;
+            button21.Text = "         Product Inventory";
+            button21.UseVisualStyleBackColor = true;
+            button21.Click += button21_Click;
             // 
             // button5
             // 
@@ -260,14 +307,14 @@
             button5.FlatAppearance.BorderSize = 0;
             button5.FlatStyle = FlatStyle.Flat;
             button5.ForeColor = SystemColors.Control;
-            button5.Image = Properties.Resources.product_management;
+            button5.Image = Properties.Resources.Unit;
             button5.ImageAlign = ContentAlignment.MiddleLeft;
             button5.Location = new Point(0, 50);
             button5.Name = "button5";
             button5.Padding = new Padding(40, 0, 0, 0);
             button5.Size = new Size(205, 50);
             button5.TabIndex = 1;
-            button5.Text = "Product\r\nInventories";
+            button5.Text = "Product Unit";
             button5.UseVisualStyleBackColor = true;
             button5.Click += button5_Click;
             // 
@@ -294,7 +341,7 @@
             button3.FlatAppearance.BorderSize = 0;
             button3.FlatStyle = FlatStyle.Flat;
             button3.ForeColor = SystemColors.Control;
-            button3.Image = Properties.Resources.product;
+            button3.Image = Properties.Resources.inventory;
             button3.ImageAlign = ContentAlignment.MiddleLeft;
             button3.Location = new Point(0, 305);
             button3.Name = "button3";
@@ -327,6 +374,7 @@
             // panel4
             // 
             panel4.BorderStyle = BorderStyle.FixedSingle;
+            panel4.Controls.Add(label34);
             panel4.Controls.Add(label2);
             panel4.Controls.Add(label1);
             panel4.Controls.Add(label4);
@@ -337,36 +385,48 @@
             panel4.Size = new Size(205, 254);
             panel4.TabIndex = 0;
             // 
+            // label34
+            // 
+            label34.AutoSize = true;
+            label34.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label34.ForeColor = Color.White;
+            label34.Location = new Point(161, 231);
+            label34.Name = "label34";
+            label34.Size = new Size(39, 13);
+            label34.TabIndex = 9;
+            label34.Text = "userId";
+            label34.Visible = false;
+            // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label2.ForeColor = Color.White;
-            label2.Location = new Point(3, 227);
+            label2.Location = new Point(5, 228);
             label2.Name = "label2";
-            label2.Size = new Size(54, 17);
+            label2.Size = new Size(50, 15);
             label2.TabIndex = 8;
             label2.Text = "Position";
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             label1.ForeColor = Color.White;
-            label1.Location = new Point(3, 206);
+            label1.Location = new Point(3, 185);
             label1.Name = "label1";
-            label1.Size = new Size(80, 21);
+            label1.Size = new Size(82, 21);
             label1.TabIndex = 7;
             label1.Text = "LastName";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label4.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             label4.ForeColor = Color.White;
-            label4.Location = new Point(3, 185);
+            label4.Location = new Point(3, 206);
             label4.Name = "label4";
-            label4.Size = new Size(82, 21);
+            label4.Size = new Size(84, 21);
             label4.TabIndex = 6;
             label4.Text = "FirstName";
             // 
@@ -407,6 +467,7 @@
             button2.TabIndex = 9;
             button2.Text = "          Logout";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // label5
             // 
@@ -1013,6 +1074,8 @@
             // panel12
             // 
             panel12.BorderStyle = BorderStyle.FixedSingle;
+            panel12.Controls.Add(comboBox4);
+            panel12.Controls.Add(label41);
             panel12.Controls.Add(textBox9);
             panel12.Controls.Add(comboBox3);
             panel12.Controls.Add(dateTimePicker1);
@@ -1041,6 +1104,25 @@
             panel12.Size = new Size(487, 806);
             panel12.TabIndex = 13;
             // 
+            // comboBox4
+            // 
+            comboBox4.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox4.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            comboBox4.FormattingEnabled = true;
+            comboBox4.Location = new Point(245, 348);
+            comboBox4.Name = "comboBox4";
+            comboBox4.Size = new Size(224, 28);
+            comboBox4.TabIndex = 57;
+            // 
+            // label41
+            // 
+            label41.AutoSize = true;
+            label41.Location = new Point(242, 333);
+            label41.Name = "label41";
+            label41.Size = new Size(37, 15);
+            label41.TabIndex = 56;
+            label41.Text = "Unit *";
+            // 
             // textBox9
             // 
             textBox9.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -1052,6 +1134,7 @@
             // 
             // comboBox3
             // 
+            comboBox3.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox3.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             comboBox3.FormattingEnabled = true;
             comboBox3.Location = new Point(18, 348);
@@ -1062,7 +1145,7 @@
             // dateTimePicker1
             // 
             dateTimePicker1.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dateTimePicker1.Location = new Point(21, 603);
+            dateTimePicker1.Location = new Point(21, 645);
             dateTimePicker1.Name = "dateTimePicker1";
             dateTimePicker1.Size = new Size(447, 27);
             dateTimePicker1.TabIndex = 53;
@@ -1070,7 +1153,7 @@
             // label30
             // 
             label30.AutoSize = true;
-            label30.Location = new Point(19, 588);
+            label30.Location = new Point(19, 630);
             label30.Name = "label30";
             label30.Size = new Size(74, 15);
             label30.TabIndex = 52;
@@ -1079,7 +1162,7 @@
             // label28
             // 
             label28.AutoSize = true;
-            label28.Location = new Point(248, 530);
+            label28.Location = new Point(247, 581);
             label28.Name = "label28";
             label28.Size = new Size(93, 15);
             label28.TabIndex = 51;
@@ -1088,7 +1171,7 @@
             // textBox16
             // 
             textBox16.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox16.Location = new Point(251, 545);
+            textBox16.Location = new Point(250, 596);
             textBox16.Name = "textBox16";
             textBox16.Size = new Size(218, 27);
             textBox16.TabIndex = 50;
@@ -1097,7 +1180,7 @@
             // label29
             // 
             label29.AutoSize = true;
-            label29.Location = new Point(18, 530);
+            label29.Location = new Point(17, 581);
             label29.Name = "label29";
             label29.Size = new Size(41, 15);
             label29.TabIndex = 49;
@@ -1106,7 +1189,7 @@
             // textBox17
             // 
             textBox17.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox17.Location = new Point(21, 545);
+            textBox17.Location = new Point(20, 596);
             textBox17.Name = "textBox17";
             textBox17.Size = new Size(221, 27);
             textBox17.TabIndex = 48;
@@ -1115,7 +1198,7 @@
             // label27
             // 
             label27.AutoSize = true;
-            label27.Location = new Point(15, 386);
+            label27.Location = new Point(14, 438);
             label27.Name = "label27";
             label27.Size = new Size(92, 15);
             label27.TabIndex = 47;
@@ -1124,7 +1207,7 @@
             // textBox15
             // 
             textBox15.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox15.Location = new Point(18, 401);
+            textBox15.Location = new Point(17, 453);
             textBox15.Name = "textBox15";
             textBox15.Size = new Size(451, 27);
             textBox15.TabIndex = 46;
@@ -1132,7 +1215,7 @@
             // label21
             // 
             label21.AutoSize = true;
-            label21.Location = new Point(245, 333);
+            label21.Location = new Point(15, 387);
             label21.Name = "label21";
             label21.Size = new Size(50, 15);
             label21.TabIndex = 45;
@@ -1141,9 +1224,9 @@
             // textBox14
             // 
             textBox14.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox14.Location = new Point(248, 348);
+            textBox14.Location = new Point(18, 402);
             textBox14.Name = "textBox14";
-            textBox14.Size = new Size(221, 27);
+            textBox14.Size = new Size(451, 27);
             textBox14.TabIndex = 44;
             // 
             // textBox13
@@ -1179,7 +1262,7 @@
             button16.BackColor = Color.FromArgb(9, 132, 227);
             button16.FlatStyle = FlatStyle.Flat;
             button16.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button16.Location = new Point(21, 656);
+            button16.Location = new Point(21, 683);
             button16.Name = "button16";
             button16.Size = new Size(448, 51);
             button16.TabIndex = 40;
@@ -1190,7 +1273,7 @@
             // label14
             // 
             label14.AutoSize = true;
-            label14.Location = new Point(15, 441);
+            label14.Location = new Point(14, 493);
             label14.Name = "label14";
             label14.Size = new Size(75, 15);
             label14.TabIndex = 39;
@@ -1199,7 +1282,7 @@
             // textBox8
             // 
             textBox8.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBox8.Location = new Point(19, 456);
+            textBox8.Location = new Point(18, 508);
             textBox8.Multiline = true;
             textBox8.Name = "textBox8";
             textBox8.Size = new Size(451, 63);
@@ -1232,7 +1315,7 @@
             button17.FlatStyle = FlatStyle.Flat;
             button17.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button17.ForeColor = Color.Black;
-            button17.Location = new Point(281, 713);
+            button17.Location = new Point(281, 740);
             button17.Name = "button17";
             button17.Size = new Size(189, 51);
             button17.TabIndex = 31;
@@ -1245,7 +1328,7 @@
             button18.BackColor = Color.FromArgb(129, 236, 236);
             button18.FlatStyle = FlatStyle.Flat;
             button18.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button18.Location = new Point(21, 713);
+            button18.Location = new Point(21, 740);
             button18.Name = "button18";
             button18.Size = new Size(254, 51);
             button18.TabIndex = 30;
@@ -1284,7 +1367,7 @@
             // listView3
             // 
             listView3.BackColor = Color.FromArgb(81, 172, 187);
-            listView3.Columns.AddRange(new ColumnHeader[] { columnHeader11, columnHeader16, columnHeader12, columnHeader13, columnHeader15, columnHeader17, columnHeader18, columnHeader22, columnHeader14 });
+            listView3.Columns.AddRange(new ColumnHeader[] { columnHeader11, columnHeader16, columnHeader12, columnHeader13, columnHeader17, columnHeader18, columnHeader27, columnHeader15, columnHeader22, columnHeader14 });
             listView3.FullRowSelect = true;
             listView3.GridLines = true;
             listView3.Location = new Point(9, 41);
@@ -1306,28 +1389,30 @@
             // 
             // columnHeader12
             // 
-            columnHeader12.Text = "Category Name";
-            columnHeader12.Width = 100;
+            columnHeader12.Text = "Product";
+            columnHeader12.Width = 150;
             // 
             // columnHeader13
             // 
-            columnHeader13.Text = "Product Name";
-            columnHeader13.Width = 120;
+            columnHeader13.Text = "Category";
+            columnHeader13.Width = 100;
+            // 
+            // columnHeader17
+            // 
+            columnHeader17.Text = "Unit";
+            // 
+            // columnHeader18
+            // 
+            columnHeader18.Text = "Price";
+            // 
+            // columnHeader27
+            // 
+            columnHeader27.Text = "Stocks";
             // 
             // columnHeader15
             // 
             columnHeader15.Text = "Description";
             columnHeader15.Width = 200;
-            // 
-            // columnHeader17
-            // 
-            columnHeader17.Text = "Price";
-            columnHeader17.Width = 80;
-            // 
-            // columnHeader18
-            // 
-            columnHeader18.Text = "Stocks";
-            columnHeader18.Width = 80;
             // 
             // columnHeader22
             // 
@@ -1351,6 +1436,220 @@
             label23.TabIndex = 9;
             label23.Text = "PRODUCTS INVENTORIES";
             // 
+            // panel13
+            // 
+            panel13.BorderStyle = BorderStyle.FixedSingle;
+            panel13.Controls.Add(label35);
+            panel13.Controls.Add(panel14);
+            panel13.Controls.Add(button25);
+            panel13.Controls.Add(textBox20);
+            panel13.Controls.Add(listView4);
+            panel13.Controls.Add(label40);
+            panel13.Location = new Point(213, 62);
+            panel13.Name = "panel13";
+            panel13.Size = new Size(1245, 831);
+            panel13.TabIndex = 8;
+            panel13.Visible = false;
+            // 
+            // label35
+            // 
+            label35.AutoSize = true;
+            label35.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label35.Location = new Point(618, 808);
+            label35.Name = "label35";
+            label35.Size = new Size(129, 15);
+            label35.TabIndex = 15;
+            label35.Text = "Click the table to select";
+            // 
+            // panel14
+            // 
+            panel14.BorderStyle = BorderStyle.FixedSingle;
+            panel14.Controls.Add(button22);
+            panel14.Controls.Add(label36);
+            panel14.Controls.Add(textBox18);
+            panel14.Controls.Add(label37);
+            panel14.Controls.Add(pictureBox6);
+            panel14.Controls.Add(button23);
+            panel14.Controls.Add(button24);
+            panel14.Controls.Add(label38);
+            panel14.Controls.Add(textBox19);
+            panel14.Controls.Add(label39);
+            panel14.Location = new Point(752, 13);
+            panel14.Name = "panel14";
+            panel14.Size = new Size(487, 712);
+            panel14.TabIndex = 13;
+            // 
+            // button22
+            // 
+            button22.BackColor = Color.FromArgb(9, 132, 227);
+            button22.FlatStyle = FlatStyle.Flat;
+            button22.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button22.Location = new Point(82, 495);
+            button22.Name = "button22";
+            button22.Size = new Size(344, 61);
+            button22.TabIndex = 40;
+            button22.Text = "Add";
+            button22.UseVisualStyleBackColor = false;
+            button22.Click += button22_Click;
+            // 
+            // label36
+            // 
+            label36.AutoSize = true;
+            label36.Location = new Point(21, 376);
+            label36.Name = "label36";
+            label36.Size = new Size(67, 15);
+            label36.TabIndex = 39;
+            label36.Text = "Description";
+            // 
+            // textBox18
+            // 
+            textBox18.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox18.Location = new Point(21, 392);
+            textBox18.Multiline = true;
+            textBox18.Name = "textBox18";
+            textBox18.Size = new Size(445, 92);
+            textBox18.TabIndex = 38;
+            // 
+            // label37
+            // 
+            label37.AutoSize = true;
+            label37.Location = new Point(408, 229);
+            label37.Name = "label37";
+            label37.Size = new Size(43, 15);
+            label37.TabIndex = 37;
+            label37.Text = "unit_id";
+            label37.Visible = false;
+            // 
+            // pictureBox6
+            // 
+            pictureBox6.BorderStyle = BorderStyle.FixedSingle;
+            pictureBox6.Image = Properties.Resources.jan_m_logo_removebg_preview;
+            pictureBox6.Location = new Point(126, 14);
+            pictureBox6.Name = "pictureBox6";
+            pictureBox6.Size = new Size(248, 228);
+            pictureBox6.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox6.TabIndex = 32;
+            pictureBox6.TabStop = false;
+            // 
+            // button23
+            // 
+            button23.BackColor = Color.FromArgb(255, 118, 117);
+            button23.FlatStyle = FlatStyle.Flat;
+            button23.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button23.ForeColor = Color.Black;
+            button23.Location = new Point(82, 629);
+            button23.Name = "button23";
+            button23.Size = new Size(344, 61);
+            button23.TabIndex = 31;
+            button23.Text = "Clear";
+            button23.UseVisualStyleBackColor = false;
+            button23.Click += button23_Click;
+            // 
+            // button24
+            // 
+            button24.BackColor = Color.FromArgb(129, 236, 236);
+            button24.FlatStyle = FlatStyle.Flat;
+            button24.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button24.Location = new Point(82, 562);
+            button24.Name = "button24";
+            button24.Size = new Size(344, 61);
+            button24.TabIndex = 30;
+            button24.Text = "Update";
+            button24.UseVisualStyleBackColor = false;
+            button24.Click += button24_Click;
+            // 
+            // label38
+            // 
+            label38.AutoSize = true;
+            label38.Location = new Point(21, 315);
+            label38.Name = "label38";
+            label38.Size = new Size(37, 15);
+            label38.TabIndex = 16;
+            label38.Text = "Unit *";
+            // 
+            // textBox19
+            // 
+            textBox19.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox19.Location = new Point(21, 331);
+            textBox19.Name = "textBox19";
+            textBox19.Size = new Size(445, 27);
+            textBox19.TabIndex = 15;
+            // 
+            // label39
+            // 
+            label39.AutoSize = true;
+            label39.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label39.ForeColor = Color.Black;
+            label39.Location = new Point(196, 245);
+            label39.Name = "label39";
+            label39.Size = new Size(112, 25);
+            label39.TabIndex = 10;
+            label39.Text = "Unit Details";
+            // 
+            // button25
+            // 
+            button25.FlatStyle = FlatStyle.Flat;
+            button25.Image = Properties.Resources.search;
+            button25.Location = new Point(706, 13);
+            button25.Name = "button25";
+            button25.Size = new Size(41, 25);
+            button25.TabIndex = 12;
+            button25.UseVisualStyleBackColor = true;
+            // 
+            // textBox20
+            // 
+            textBox20.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox20.Location = new Point(522, 13);
+            textBox20.Name = "textBox20";
+            textBox20.Size = new Size(180, 25);
+            textBox20.TabIndex = 11;
+            textBox20.TextChanged += textBox20_TextChanged;
+            // 
+            // listView4
+            // 
+            listView4.BackColor = Color.FromArgb(81, 172, 187);
+            listView4.Columns.AddRange(new ColumnHeader[] { columnHeader23, columnHeader24, columnHeader25, columnHeader26 });
+            listView4.FullRowSelect = true;
+            listView4.GridLines = true;
+            listView4.Location = new Point(9, 41);
+            listView4.Name = "listView4";
+            listView4.Size = new Size(738, 764);
+            listView4.TabIndex = 10;
+            listView4.UseCompatibleStateImageBehavior = false;
+            listView4.View = View.Details;
+            listView4.MouseClick += listView4_MouseClick;
+            // 
+            // columnHeader23
+            // 
+            columnHeader23.Text = "ID";
+            // 
+            // columnHeader24
+            // 
+            columnHeader24.Text = "Unit";
+            columnHeader24.Width = 150;
+            // 
+            // columnHeader25
+            // 
+            columnHeader25.Text = "Description";
+            columnHeader25.Width = 250;
+            // 
+            // columnHeader26
+            // 
+            columnHeader26.Text = "Date Created";
+            columnHeader26.Width = 150;
+            // 
+            // label40
+            // 
+            label40.AutoSize = true;
+            label40.FlatStyle = FlatStyle.Flat;
+            label40.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label40.ForeColor = Color.Black;
+            label40.Location = new Point(9, 13);
+            label40.Name = "label40";
+            label40.Size = new Size(267, 21);
+            label40.TabIndex = 9;
+            label40.Text = "PRODUCT UNIT OF MEASUREMENT";
+            // 
             // admin_dashboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1360,6 +1659,7 @@
             Controls.Add(label3);
             Controls.Add(panel2);
             Controls.Add(panel1);
+            Controls.Add(panel13);
             Controls.Add(panel11);
             Controls.Add(panel9);
             Controls.Add(panel7);
@@ -1395,6 +1695,11 @@
             panel12.ResumeLayout(false);
             panel12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
+            panel13.ResumeLayout(false);
+            panel13.PerformLayout();
+            panel14.ResumeLayout(false);
+            panel14.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1406,9 +1711,6 @@
         private Label label3;
         private PictureBox pictureBox1;
         private Panel panel4;
-        private Label label2;
-        private Label label1;
-        private Label label4;
         private Button button1;
         private Label label5;
         private Button button2;
@@ -1510,12 +1812,41 @@
         public PictureBox pictureBox5;
         private ColumnHeader columnHeader16;
         private ColumnHeader columnHeader15;
-        private ColumnHeader columnHeader17;
         private ColumnHeader columnHeader18;
         private ColumnHeader columnHeader22;
         public TextBox textBox9;
         private Label label32;
         private Label label31;
         private Label label33;
+        public Label label2;
+        public Label label1;
+        public Label label4;
+        public Label label34;
+        private Button button21;
+        public Panel panel13;
+        private Label label35;
+        private Panel panel14;
+        private Button button22;
+        private Label label36;
+        public TextBox textBox18;
+        public Label label37;
+        private PictureBox pictureBox6;
+        private Button button23;
+        private Button button24;
+        private Label label38;
+        public TextBox textBox19;
+        private Label label39;
+        private Button button25;
+        private TextBox textBox20;
+        public ListView listView4;
+        public ColumnHeader columnHeader23;
+        private ColumnHeader columnHeader24;
+        private ColumnHeader columnHeader25;
+        private ColumnHeader columnHeader26;
+        private Label label40;
+        public ComboBox comboBox4;
+        private Label label41;
+        private ColumnHeader columnHeader27;
+        private ColumnHeader columnHeader17;
     }
 }

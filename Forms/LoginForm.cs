@@ -27,7 +27,7 @@ namespace jandm_pos.Forms
             string password = textBox2.Text.Trim();
 
             functions_system functions_System = new functions_system();
-            functions_System.login_user(username, password);
+            functions_System.login_user(username, password, this);
             clearForm();
         }
 
