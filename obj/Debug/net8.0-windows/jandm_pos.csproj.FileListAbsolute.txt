@@ -87,3 +87,4 @@ D:\JANM Pos System\jandm_pos\jandm_pos\obj\Debug\net8.0-windows\jandm_pos.genrun
 D:\JANM Pos System\jandm_pos\jandm_pos\obj\Debug\net8.0-windows\ref\jandm_pos.dll
 D:\JANM Pos System\jandm_pos\jandm_pos\obj\Debug\net8.0-windows\jandm_pos.Forms.cashier_dashboard.resources
 D:\JANM Pos System\jandm_pos\jandm_pos\obj\Debug\net8.0-windows\jandm_pos.Forms.quantity.resources
+D:\JANM Pos System\jandm_pos\jandm_pos\obj\Debug\net8.0-windows\jandm_pos.Forms.Add_Item.resources

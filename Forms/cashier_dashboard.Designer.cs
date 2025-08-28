@@ -57,6 +57,7 @@
             label3 = new Label();
             panel11 = new Panel();
             panel8 = new Panel();
+            label21 = new Label();
             label6 = new Label();
             button12 = new Button();
             panel9 = new Panel();
@@ -89,6 +90,7 @@
             label17 = new Label();
             label7 = new Label();
             dataGridView1 = new DataGridView();
+            Column8 = new DataGridViewTextBoxColumn();
             Column1 = new DataGridViewImageColumn();
             Column7 = new DataGridViewTextBoxColumn();
             Column2 = new DataGridViewTextBoxColumn();
@@ -344,6 +346,7 @@
             // panel8
             // 
             panel8.BorderStyle = BorderStyle.FixedSingle;
+            panel8.Controls.Add(label21);
             panel8.Controls.Add(label6);
             panel8.Controls.Add(button12);
             panel8.Controls.Add(panel9);
@@ -366,6 +369,17 @@
             panel8.Name = "panel8";
             panel8.Size = new Size(1225, 193);
             panel8.TabIndex = 13;
+            // 
+            // label21
+            // 
+            label21.AutoSize = true;
+            label21.BackColor = Color.LightPink;
+            label21.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label21.Location = new Point(194, 82);
+            label21.Name = "label21";
+            label21.Size = new Size(123, 13);
+            label21.TabIndex = 37;
+            label21.Text = "To Select Table (Ctrl+T)";
             // 
             // label6
             // 
@@ -421,6 +435,7 @@
             textBox4.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             textBox4.Location = new Point(70, 151);
             textBox4.Name = "textBox4";
+            textBox4.ReadOnly = true;
             textBox4.Size = new Size(391, 22);
             textBox4.TabIndex = 2;
             // 
@@ -441,6 +456,7 @@
             textBox3.Location = new Point(17, 47);
             textBox3.Multiline = true;
             textBox3.Name = "textBox3";
+            textBox3.ReadOnly = true;
             textBox3.Size = new Size(444, 96);
             textBox3.TabIndex = 2;
             textBox3.TextAlign = HorizontalAlignment.Center;
@@ -652,6 +668,7 @@
             textBox2.Location = new Point(18, 42);
             textBox2.Multiline = true;
             textBox2.Name = "textBox2";
+            textBox2.ReadOnly = true;
             textBox2.Size = new Size(572, 94);
             textBox2.TabIndex = 1;
             textBox2.TextAlign = HorizontalAlignment.Center;
@@ -703,9 +720,9 @@
             label17.Font = new Font("Segoe UI Semibold", 20F, FontStyle.Bold);
             label17.Location = new Point(10, 102);
             label17.Name = "label17";
-            label17.Size = new Size(136, 37);
+            label17.Size = new Size(32, 37);
             label17.TabIndex = 11;
-            label17.Text = "Unit Price";
+            label17.Text = "0";
             // 
             // label7
             // 
@@ -729,7 +746,7 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Column1, Column7, Column2, Column3, Column4, Column5, Column6 });
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Column8, Column1, Column7, Column2, Column3, Column4, Column5, Column6 });
             dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle8.BackColor = SystemColors.Window;
             dataGridViewCellStyle8.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -752,6 +769,12 @@
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.Size = new Size(1229, 473);
             dataGridView1.TabIndex = 10;
+            // 
+            // Column8
+            // 
+            Column8.HeaderText = "ID";
+            Column8.Name = "Column8";
+            Column8.Width = 40;
             // 
             // Column1
             // 
@@ -792,7 +815,7 @@
             Column4.DefaultCellStyle = dataGridViewCellStyle5;
             Column4.HeaderText = "Product";
             Column4.Name = "Column4";
-            Column4.Width = 350;
+            Column4.Width = 320;
             // 
             // Column5
             // 
@@ -826,6 +849,7 @@
             Name = "cashier_dashboard";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Cashier";
+            Load += cashier_dashboard_Load;
             KeyDown += cashier_dashboard_KeyDown;
             panel1.ResumeLayout(false);
             panel6.ResumeLayout(false);
@@ -892,13 +916,6 @@
         private Button button11;
         public PictureBox pictureBox5;
         public TextBox textBox1;
-        private DataGridViewImageColumn Column1;
-        private DataGridViewTextBoxColumn Column7;
-        private DataGridViewTextBoxColumn Column2;
-        private DataGridViewTextBoxColumn Column3;
-        private DataGridViewTextBoxColumn Column4;
-        private DataGridViewTextBoxColumn Column5;
-        private DataGridViewTextBoxColumn Column6;
         public Label label7;
         public Label label17;
         private Panel panel9;
@@ -912,5 +929,14 @@
         public DataGridView dataGridView1;
         public Label label20;
         public TextBox textBox4;
+        private DataGridViewTextBoxColumn Column8;
+        private DataGridViewImageColumn Column1;
+        private DataGridViewTextBoxColumn Column7;
+        private DataGridViewTextBoxColumn Column2;
+        private DataGridViewTextBoxColumn Column3;
+        private DataGridViewTextBoxColumn Column4;
+        private DataGridViewTextBoxColumn Column5;
+        private DataGridViewTextBoxColumn Column6;
+        private Label label21;
     }
 }

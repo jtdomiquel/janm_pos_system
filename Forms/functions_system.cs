@@ -984,6 +984,7 @@ namespace jandm_pos.Forms
             {
                 string query = @"
                            SELECT 
+                             pending_transactions.id,
                              pending_transactions.barcode,
                              pending_transactions.quantity,
                              pending_transactions.price as transaction_price,
@@ -999,7 +1000,7 @@ namespace jandm_pos.Forms
                          INNER JOIN products 
                              ON pending_transactions.barcode = products.barcode
                          INNER JOIN product_unit ON products.`unit_id` = product_unit.`id`
-                          ORDER BY transaction_data_save DESC";
+                          ORDER BY pending_transactions.id DESC";
                 MySqlDataAdapter da = new MySqlDataAdapter(query, conn);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -1017,6 +1018,7 @@ namespace jandm_pos.Forms
                     }
 
                     dgv.Rows.Add(
+                        row["id"].ToString(),
                         img,
                         row["barcode"].ToString(),
                         row["quantity"].ToString(),
@@ -1130,8 +1132,90 @@ namespace jandm_pos.Forms
 
         public void clearCashierFormTransaction(cashier_dashboard useForm) 
         {
+            useForm.label7.Text = "Product Name";
+            useForm.label17.Text = "0";
+            useForm.pictureBox5.Image = Properties.Resources.no_image;
             useForm.textBox1.Clear();
             useForm.textBox1.Focus();
+        }
+
+        public void deletePendingTransaction(string userId)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+                string query = "DELETE FROM pending_transactions WHERE user_id = @user_id";
+                using (var cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@user_id", userId);
+                    int rows = cmd.ExecuteNonQuery();
+
+                    if (rows > 0)
+                        MessageBox.Show("✅ Pending Transaction successfully canceled!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    else
+                        MessageBox.Show("⚠️ Transaction not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        public void deleteItemPendingTransaction(int id)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+                string query = "DELETE FROM pending_transactions WHERE id = @id";
+                using (var cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+                    int rows = cmd.ExecuteNonQuery();
+
+                    if (rows > 0)
+                        MessageBox.Show("✅ Pending Transaction successfully canceled!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    else
+                        MessageBox.Show("⚠️ Transaction not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        public void search_products_cashier(DataGridView dgv, string search)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                string query = " SELECT * FROM products"+
+                    " INNER JOIN product_unit ON products.unit_id = product_unit.id"+
+                    " WHERE products.`barcode` LIKE '" + search + "%' " +
+                    " OR products.`name` LIKE '" + search + "%' " +
+                    " OR products.`description` LIKE '" + search + "%' " +
+                    " OR products.`price` LIKE '" + search + "%' ";
+
+                MySqlDataAdapter da = new MySqlDataAdapter(query, conn);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                dgv.Rows.Clear();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    Image img = null;
+                    string imgPath = row["img_path"].ToString();
+
+                    if (File.Exists(imgPath))
+                    {
+                        img = Image.FromFile(imgPath);
+                    }
+
+                    dgv.Rows.Add(
+                        row["product_id"].ToString(),
+                        img,
+                        row["barcode"].ToString(),
+                        row["unit"].ToString(),
+                        row["name"].ToString(),
+                        row["price"].ToString()
+
+                    );
+                }
+
+            }
         }
 
 
