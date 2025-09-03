@@ -10,7 +10,13 @@
     <Compile Update="Forms\cashier_dashboard.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\checkOutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\POSReportApp.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\quantity.cs">

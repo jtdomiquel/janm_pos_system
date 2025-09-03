@@ -31,9 +31,31 @@ namespace jandm_pos.Forms
             clearForm();
         }
 
-        public void clearForm() {
+        public void clearForm()
+        {
             textBox1.Text = "";
             textBox2.Text = "";
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                textBox2.Focus();
+            }
+        }
+
+        private void textBox2_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                button1.Focus();
+            }
+        }
+
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+            textBox1.Focus();
         }
     }
 }

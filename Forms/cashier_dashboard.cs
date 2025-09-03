@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Printing;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.IO.Ports;
 
 namespace jandm_pos.Forms
 {
@@ -38,18 +39,18 @@ namespace jandm_pos.Forms
         {
             if (e.KeyCode == Keys.F1)
             {
-                MessageBox.Show("F1 was pressed!");
-                // Execute your command here
+                var checkOut = new checkOutForm(this);
+                checkOut.Show();
             }
 
-            if (e.KeyCode == Keys.F2) 
+            if (e.KeyCode == Keys.F2)
             {
                 dataGridView1.ClearSelection();
                 var showForm = new quantity(this);
                 showForm.Show();
             }
 
-            if (e.KeyCode == Keys.F8)
+            if (e.KeyCode == Keys.F7)
             {
                 dataGridView1.ClearSelection();
                 textBox1.Focus();
@@ -81,10 +82,19 @@ namespace jandm_pos.Forms
 
             }
 
+            if (e.KeyCode == Keys.F5) // Example: press F1
+            {
+
+                byte[] openDrawerCommand = { 0x1B, 0x70, 0x00, 0x19, 0xFA };
+                RawPrinterHelper.SendBytesToPrinter("POS-58", openDrawerCommand, openDrawerCommand.Length);
+
+            }
+
             if (e.KeyCode == Keys.F6)
             {
-                Add_Item showAddItem = new Add_Item();
-                showAddItem.Show();
+                dataGridView1.ClearSelection();
+                var showForm = new Add_Item(this);
+                showForm.Show();
             }
 
             if (e.KeyCode == Keys.F3) // Example: press F1
@@ -95,7 +105,7 @@ namespace jandm_pos.Forms
                     DataGridViewRow row = dataGridView1.SelectedRows[0];
                     int pendingId = Convert.ToInt32(row.Cells["Column8"].Value);
 
-                    if (row.Cells["Column8"].Value == "") 
+                    if (row.Cells["Column8"].Value == "")
                     {
                         MessageBox.Show("⚠️ Item not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
@@ -113,10 +123,23 @@ namespace jandm_pos.Forms
                 }
             }
 
-            if (e.Control && e.KeyCode == Keys.T)  
+            if (e.Control && e.KeyCode == Keys.T)
             {
                 dataGridView1.ClearSelection();
                 dataGridView1.Focus();
+            }
+
+            if (e.Control && e.KeyCode == Keys.L)  // Ctrl + L
+            {
+                if (MessageBox.Show("Are you sure you want to LOGOUT ??",
+                    "DONE",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning) == DialogResult.OK)
+                {
+                    string userId = label34.Text;
+                    functions_system logOutUser = new functions_system();
+                    logOutUser.logOutUser(userId, this);
+                }
             }
 
         }
@@ -175,7 +198,13 @@ namespace jandm_pos.Forms
             dataGridView1.ClearSelection();
             functions_system loadPendingTransaction = new functions_system();
             loadPendingTransaction.display_pending_transactions_cashier(dataGridView1);
+            loadPendingTransaction.getTotalAmountPendingTransactionCashier(this);
             textBox1.Focus();
+        }
+
+        private void l(object sender, EventArgs e)
+        {
+
         }
     }
 }

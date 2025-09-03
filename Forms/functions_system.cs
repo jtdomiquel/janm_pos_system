@@ -1,14 +1,17 @@
 ﻿using MySql.Data.MySqlClient;
 using MySqlX.XDevAPI;
+using QuestPDF.Fluent;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -210,6 +213,11 @@ namespace jandm_pos.Forms
             if (admin_Dashboard.panel13.Visible)
             {
                 admin_Dashboard.panel13.Visible = false;
+            }
+
+            if (admin_Dashboard.panel15.Visible)
+            {
+                admin_Dashboard.panel15.Visible = false;
             }
         }
 
@@ -787,13 +795,19 @@ namespace jandm_pos.Forms
 
                 foreach (DataRow row in dataTable.Rows)
                 {
+                    string strPrice = Convert.ToString(row[6]);
+                    decimal price = decimal.Parse(strPrice);
+
+                    string strQty = Convert.ToString(row[7]);
+                    decimal qty = decimal.Parse(strQty);
+
                     ListViewItem item = new ListViewItem(Convert.ToString(row[0]));
                     item.SubItems.Add(Convert.ToString(row[3]));
                     item.SubItems.Add(Convert.ToString(row[4]));
                     item.SubItems.Add(Convert.ToString(row[13]));
                     item.SubItems.Add(Convert.ToString(row[18]));
-                    item.SubItems.Add(Convert.ToString(row[6]));
-                    item.SubItems.Add(Convert.ToString(row[7]));
+                    item.SubItems.Add(price.ToString("N2"));
+                    item.SubItems.Add(qty.ToString("N2"));
                     item.SubItems.Add(Convert.ToString(row[5]));
                     item.SubItems.Add(Convert.ToString(row[8]));
                     item.SubItems.Add(Convert.ToString(row[10]));
@@ -1217,6 +1231,275 @@ namespace jandm_pos.Forms
 
             }
         }
+
+        public void validateProductBarcode(admin_dashboard userForm, string barcode)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                string query = @"
+                SELECT * FROM `products`
+                WHERE products.`barcode` = @barcode";
+
+                MySqlDataAdapter adapter = new MySqlDataAdapter(query, conn);
+                adapter.SelectCommand.Parameters.AddWithValue("@barcode", barcode);
+
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                if (dt.Rows.Count > 0)
+                {
+                    MessageBox.Show("⚠️ Unable to add this item (barcode already in the system).", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    addNewProductInventory(userForm);
+                }
+            }
+        }
+
+        public void CheckoutTransaction(checkOutForm checkOutForm, int userId, string cashierName, decimal cash, string customerName)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+                MySqlTransaction transaction = conn.BeginTransaction();
+
+                try
+                {
+                    // 1. Get all pending items
+                    string getPending = @"SELECT 
+                             pending_transactions.id,
+                             pending_transactions.barcode,
+                             pending_transactions.quantity,
+                             pending_transactions.price as transaction_price,
+                             pending_transactions.total_price,
+                             pending_transactions.date_save as transaction_data_save,
+                             products.product_id,
+                             products.name,
+                             products.price,
+                             products.stock_quantity,
+                             products.expiry_date,
+                             products.img_path
+                         FROM pending_transactions
+                         INNER JOIN products ON pending_transactions.barcode = products.barcode
+                         WHERE pending_transactions.`user_id` = @userId";
+                    MySqlCommand cmd = new MySqlCommand(getPending, conn, transaction);
+                    cmd.Parameters.AddWithValue("@userId", userId);
+
+                    var items = new List<(int productId, string productName, decimal qty, decimal price, decimal total_price)>();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            items.Add((
+                                reader.GetInt32("product_id"),
+                                reader.GetString("name"),
+                                reader.GetDecimal("quantity"),
+                                reader.GetDecimal("price"),
+                                reader.GetDecimal("total_price")
+                            ));
+                        }
+                    }
+
+                    if (items.Count == 0)
+                    {
+                        MessageBox.Show("No items in pending transaction.");
+                        return;
+                    }
+
+                    // 2. Calculate total
+                    decimal totalAmount = 0;
+                    foreach (var item in items)
+                        totalAmount += item.price * item.qty;
+
+                    decimal change = cash - totalAmount;
+
+                    // 3. Insert into sales_transactions (header)
+                    string insertHeader = @"INSERT INTO sales_transactions 
+                    (user_id, customer_name, total_amount, change_amount, cash, date_save) 
+                    VALUES (@userId, @customerName, @total, @change_amount, @cash, NOW());
+                    SELECT LAST_INSERT_ID();";
+
+                    MySqlCommand headerCmd = new MySqlCommand(insertHeader, conn, transaction);
+                    headerCmd.Parameters.AddWithValue("@userId", userId);
+                    headerCmd.Parameters.AddWithValue("@customerName", customerName);
+                    headerCmd.Parameters.AddWithValue("@total", totalAmount);
+                    headerCmd.Parameters.AddWithValue("@cash", cash);
+                    headerCmd.Parameters.AddWithValue("@change_amount", change);
+
+                    int transactionId = Convert.ToInt32(headerCmd.ExecuteScalar());
+
+                    // 4. Insert items
+                    foreach (var item in items)
+                    {
+                        string insertItem = @"INSERT INTO sold_items 
+                                      (sales_tran_id, product_id, quantity, price, total_price, date_save) 
+                                      VALUES (@transId, @productId, @qty, @price, @total_price, NOW())";
+                        MySqlCommand itemCmd = new MySqlCommand(insertItem, conn, transaction);
+                        itemCmd.Parameters.AddWithValue("@transId", transactionId);
+                        itemCmd.Parameters.AddWithValue("@productId", item.productId);
+                        itemCmd.Parameters.AddWithValue("@qty", item.qty);
+                        itemCmd.Parameters.AddWithValue("@price", item.price);
+                        itemCmd.Parameters.AddWithValue("@total_price", item.total_price);
+                        itemCmd.ExecuteNonQuery();
+
+                        // Update stock
+                        string updateStock = @"UPDATE products SET stock_quantity = stock_quantity - @qty WHERE product_id = @productId";
+                        MySqlCommand stockCmd = new MySqlCommand(updateStock, conn, transaction);
+                        stockCmd.Parameters.AddWithValue("@qty", item.qty);
+                        stockCmd.Parameters.AddWithValue("@productId", item.productId);
+                        stockCmd.ExecuteNonQuery();
+                    }
+
+                    // 5. Delete from pending
+                    string deletePending = "DELETE FROM pending_transactions WHERE user_id = @userId";
+                    MySqlCommand deleteCmd = new MySqlCommand(deletePending, conn, transaction);
+                    deleteCmd.Parameters.AddWithValue("@userId", userId);
+                    deleteCmd.ExecuteNonQuery();
+
+                    transaction.Commit();
+                    MessageBox.Show($"Checkout successful! Change: {change:C}");
+                    checkOutForm.Close();
+
+                    DialogResult printChoice = MessageBox.Show("Do you want to print a receipt?",
+                                                       "Print Receipt",
+                                                       MessageBoxButtons.YesNo,
+                                                       MessageBoxIcon.Question);
+
+                    if (printChoice == DialogResult.Yes)
+                    {
+                        var receiptItems = new List<(string productName, decimal qty, decimal price)>();
+                        foreach (var i in items)
+                        {
+                            receiptItems.Add((i.productName, i.qty, i.price));
+                        }
+                        ReceiptPrinter58mm receipt = new ReceiptPrinter58mm(transactionId, customerName, cashierName, totalAmount, cash, change, receiptItems);
+                        receipt.Print();
+                     }
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    MessageBox.Show("Checkout failed: " + ex.Message);
+                    checkOutForm.Close();
+                }
+            }
+        }
+
+        public List<SalesReportItem> GetSalesReport(DateTime startDate, DateTime endDate)
+        {
+            var reportData = new List<SalesReportItem>();
+
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+                string query = @"
+                            SELECT 
+                                u.firstname, u.lastname,
+                                p.name AS ProductName,
+                                SUM(si.quantity) AS TotalQuantity,
+                                pu.unit,
+                                si.price, -- if price may vary, you can use AVG(si.price)
+                                SUM(si.total_price) AS TotalSales,
+                                MIN(si.date_save) AS FirstSaleDates
+                            FROM sold_items si
+                            INNER JOIN sales_transactions st ON si.sales_tran_id = st.id
+                            INNER JOIN products p ON si.product_id = p.product_id
+                            INNER JOIN users u ON st.user_id = u.user_id
+                            INNER JOIN product_unit pu ON p.unit_id = pu.id
+                            WHERE st.date_save BETWEEN @startDate AND @endDate
+                            GROUP BY u.firstname, u.lastname, p.name, si.price, pu.unit
+                            ORDER BY ProductName ASC;
+                        ";
+
+                using (var cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@startDate", startDate);
+                    cmd.Parameters.AddWithValue("@endDate", endDate);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var item = new SalesReportItem
+                            {
+                                CashierName = reader["firstname"].ToString() + " " + reader["lastname"].ToString(),
+                                ProductName = reader["ProductName"].ToString(),
+                                Quantity = Convert.ToInt32(reader["TotalQuantity"]),
+                                Unit = reader["unit"].ToString(),
+                                Price = Convert.ToDecimal(reader["price"]),
+                                SubTotal = Convert.ToDecimal(reader["TotalSales"]),
+                                DateSaved = Convert.ToDateTime(reader["FirstSaleDates"])
+                            };
+
+                            reportData.Add(item);
+                        }
+                    }
+                }
+            }
+
+            return reportData;
+        }
+
+
+        public void filterSales(ListView targetListView, DateTime startDate, DateTime endDate)
+        {
+            using (var conn = Database.GetConnection())
+            {
+                conn.Open();
+                string query = @"
+                    SELECT 
+                        u.firstname, 
+                        u.lastname, 
+                        p.name AS ProductName, 
+                        si.quantity, 
+                        pu.unit, 
+                        si.price, 
+                        si.total_price, 
+                        si.date_save
+                    FROM sold_items si
+                    INNER JOIN sales_transactions st ON si.sales_tran_id = st.id
+                    INNER JOIN products p ON si.product_id = p.product_id
+                    INNER JOIN users u ON st.user_id = u.user_id
+                    INNER JOIN product_unit pu ON p.unit_id = pu.id
+                    WHERE st.date_save BETWEEN @startDate AND @endDate
+                    ORDER BY si.date_save ASC";
+
+                using (var cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@startDate", startDate);
+                    cmd.Parameters.AddWithValue("@endDate", endDate);
+
+                    MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd);
+                    DataTable dataTable = new DataTable();
+                    dataAdapter.Fill(dataTable);
+
+                    targetListView.Items.Clear();
+
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        var cashier = $"{row["lastname"]}, {row["firstname"]}";
+                        var product = Convert.ToString(row["ProductName"]);
+                        var qty = Convert.ToString(row["quantity"]);
+                        var unit = Convert.ToString(row["unit"]);
+                        var price = Convert.ToDecimal(row["price"]).ToString("N2");
+                        var subtotal = Convert.ToDecimal(row["total_price"]).ToString("N2");
+                        var date = Convert.ToDateTime(row["date_save"]).ToString("MM-dd-yyyy");
+
+                        ListViewItem item = new ListViewItem(cashier);
+                        item.SubItems.Add(product);
+                        item.SubItems.Add(qty);
+                        item.SubItems.Add(unit);
+                        item.SubItems.Add("₱" + price);
+                        item.SubItems.Add("₱" + subtotal);
+                        item.SubItems.Add(date);
+
+                        targetListView.Items.Add(item);
+                    }
+                }
+            }
+        }
+
 
 
     }

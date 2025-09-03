@@ -38,6 +38,7 @@
             button3 = new Button();
             label2 = new Label();
             button1 = new Button();
+            panel1 = new Panel();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             SuspendLayout();
             // 
@@ -138,6 +139,14 @@
             button1.TextAlign = ContentAlignment.TopLeft;
             button1.UseVisualStyleBackColor = false;
             // 
+            // panel1
+            // 
+            panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Location = new Point(3, 4);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(431, 575);
+            panel1.TabIndex = 45;
+            // 
             // quantity
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -153,6 +162,7 @@
             Controls.Add(label10);
             Controls.Add(textBox1);
             Controls.Add(pictureBox5);
+            Controls.Add(panel1);
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "quantity";
@@ -176,5 +186,6 @@
         private Button button3;
         private Label label2;
         private Button button1;
+        private Panel panel1;
     }
 }

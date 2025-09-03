@@ -90,6 +90,7 @@
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(278, 33);
             textBox1.TabIndex = 4;
+            textBox1.KeyDown += textBox1_KeyDown;
             // 
             // label4
             // 
@@ -119,6 +120,7 @@
             textBox2.Size = new Size(278, 33);
             textBox2.TabIndex = 6;
             textBox2.UseSystemPasswordChar = true;
+            textBox2.KeyDown += textBox2_KeyDown;
             // 
             // button1
             // 
@@ -175,6 +177,7 @@
             Name = "LoginForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Login";
+            Load += LoginForm_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);
             PerformLayout();

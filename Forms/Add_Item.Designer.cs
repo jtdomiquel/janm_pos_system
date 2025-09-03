@@ -51,6 +51,7 @@
             button1 = new Button();
             label11 = new Label();
             button3 = new Button();
+            panel1 = new Panel();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -235,6 +236,14 @@
             button3.TextAlign = ContentAlignment.TopLeft;
             button3.UseVisualStyleBackColor = false;
             // 
+            // panel1
+            // 
+            panel1.BorderStyle = BorderStyle.Fixed3D;
+            panel1.Location = new Point(2, 2);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(1272, 612);
+            panel1.TabIndex = 49;
+            // 
             // Add_Item
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -251,6 +260,7 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(dataGridView1);
+            Controls.Add(panel1);
             FormBorderStyle = FormBorderStyle.None;
             Name = "Add_Item";
             StartPosition = FormStartPosition.CenterScreen;
@@ -280,5 +290,6 @@
         private Button button1;
         private Label label11;
         private Button button3;
+        private Panel panel1;
     }
 }

@@ -54,15 +54,17 @@
             label13 = new Label();
             comboBox1 = new ComboBox();
             label14 = new Label();
+            panel1 = new Panel();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // pictureBox1
             // 
             pictureBox1.Image = Properties.Resources.jan_m_logo_removebg_preview;
-            pictureBox1.Location = new Point(210, 12);
+            pictureBox1.Location = new Point(202, 3);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(278, 253);
+            pictureBox1.Size = new Size(271, 249);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 1;
             pictureBox1.TabStop = false;
@@ -298,6 +300,15 @@
             label14.TabIndex = 27;
             label14.Text = "User Type";
             // 
+            // panel1
+            // 
+            panel1.BorderStyle = BorderStyle.FixedSingle;
+            panel1.Controls.Add(pictureBox1);
+            panel1.Location = new Point(12, 12);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(657, 873);
+            panel1.TabIndex = 28;
+            // 
             // SignUpForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -328,13 +339,14 @@
             Controls.Add(textBox1);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(pictureBox1);
+            Controls.Add(panel1);
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "SignUpForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Sign Up";
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -366,5 +378,6 @@
         private Label label13;
         private ComboBox comboBox1;
         private Label label14;
+        private Panel panel1;
     }
 }

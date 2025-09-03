@@ -54,9 +54,17 @@
               "target": "Package",
               "version": "[9.4.0, )"
             },
+            "QuestPDF": {
+              "target": "Package",
+              "version": "[2025.7.1, )"
+            },
             "System.Data.SQLite.Core": {
               "target": "Package",
               "version": "[1.0.119, )"
+            },
+            "System.IO.Ports": {
+              "target": "Package",
+              "version": "[9.0.8, )"
             }
           },
           "imports": [

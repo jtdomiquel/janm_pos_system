@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(admin_dashboard));
             panel1 = new Panel();
             panel6 = new Panel();
-            button6 = new Button();
             button7 = new Button();
             button8 = new Button();
             panel5 = new Panel();
@@ -171,6 +170,23 @@
             columnHeader25 = new ColumnHeader();
             columnHeader26 = new ColumnHeader();
             label40 = new Label();
+            panel15 = new Panel();
+            button27 = new Button();
+            button26 = new Button();
+            label42 = new Label();
+            dateTimePicker2 = new DateTimePicker();
+            label43 = new Label();
+            dateTimePicker3 = new DateTimePicker();
+            label47 = new Label();
+            listView5 = new ListView();
+            columnHeader28 = new ColumnHeader();
+            columnHeader29 = new ColumnHeader();
+            columnHeader30 = new ColumnHeader();
+            columnHeader31 = new ColumnHeader();
+            columnHeader32 = new ColumnHeader();
+            columnHeader33 = new ColumnHeader();
+            columnHeader34 = new ColumnHeader();
+            button6 = new Button();
             panel1.SuspendLayout();
             panel6.SuspendLayout();
             panel5.SuspendLayout();
@@ -191,6 +207,7 @@
             panel13.SuspendLayout();
             panel14.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
+            panel15.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -218,25 +235,9 @@
             panel6.Dock = DockStyle.Top;
             panel6.Location = new Point(0, 583);
             panel6.Name = "panel6";
-            panel6.Size = new Size(205, 110);
+            panel6.Size = new Size(205, 116);
             panel6.TabIndex = 5;
             panel6.Visible = false;
-            // 
-            // button6
-            // 
-            button6.Dock = DockStyle.Top;
-            button6.FlatAppearance.BorderSize = 0;
-            button6.FlatStyle = FlatStyle.Flat;
-            button6.ForeColor = SystemColors.Control;
-            button6.Image = Properties.Resources.cashier_sales;
-            button6.ImageAlign = ContentAlignment.MiddleLeft;
-            button6.Location = new Point(0, 50);
-            button6.Name = "button6";
-            button6.Padding = new Padding(40, 0, 0, 0);
-            button6.Size = new Size(205, 50);
-            button6.TabIndex = 1;
-            button6.Text = "         Sales per Cashier";
-            button6.UseVisualStyleBackColor = true;
             // 
             // button7
             // 
@@ -253,6 +254,7 @@
             button7.TabIndex = 0;
             button7.Text = "         Sales Summaries";
             button7.UseVisualStyleBackColor = true;
+            button7.Click += button7_Click;
             // 
             // button8
             // 
@@ -268,7 +270,7 @@
             button8.TabIndex = 4;
             button8.TabStop = false;
             button8.Tag = "";
-            button8.Text = "Sales and\r\nTransaction Reports";
+            button8.Text = "Reports";
             button8.UseVisualStyleBackColor = true;
             button8.Click += button8_Click;
             // 
@@ -1354,6 +1356,7 @@
             button19.Size = new Size(41, 25);
             button19.TabIndex = 12;
             button19.UseVisualStyleBackColor = true;
+            button19.Click += button19_Click;
             // 
             // textBox11
             // 
@@ -1650,12 +1653,171 @@
             label40.TabIndex = 9;
             label40.Text = "PRODUCT UNIT OF MEASUREMENT";
             // 
+            // panel15
+            // 
+            panel15.BorderStyle = BorderStyle.FixedSingle;
+            panel15.Controls.Add(button27);
+            panel15.Controls.Add(button26);
+            panel15.Controls.Add(label42);
+            panel15.Controls.Add(dateTimePicker2);
+            panel15.Controls.Add(label43);
+            panel15.Controls.Add(dateTimePicker3);
+            panel15.Controls.Add(label47);
+            panel15.Controls.Add(listView5);
+            panel15.Location = new Point(213, 62);
+            panel15.Name = "panel15";
+            panel15.Size = new Size(1245, 831);
+            panel15.TabIndex = 9;
+            panel15.Visible = false;
+            // 
+            // button27
+            // 
+            button27.BackColor = Color.FromArgb(129, 236, 236);
+            button27.FlatStyle = FlatStyle.Flat;
+            button27.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button27.Image = Properties.Resources.finance_and_business;
+            button27.ImageAlign = ContentAlignment.MiddleLeft;
+            button27.Location = new Point(974, 773);
+            button27.Name = "button27";
+            button27.Size = new Size(261, 50);
+            button27.TabIndex = 37;
+            button27.Text = "Generate Report";
+            button27.UseVisualStyleBackColor = false;
+            button27.Click += button27_Click;
+            // 
+            // button26
+            // 
+            button26.BackColor = Color.FromArgb(129, 236, 236);
+            button26.FlatStyle = FlatStyle.Flat;
+            button26.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            button26.Image = Properties.Resources.filter_data;
+            button26.ImageAlign = ContentAlignment.MiddleLeft;
+            button26.Location = new Point(1023, 9);
+            button26.Name = "button26";
+            button26.Size = new Size(212, 42);
+            button26.TabIndex = 36;
+            button26.Text = "Filter";
+            button26.UseVisualStyleBackColor = false;
+            button26.Click += button26_Click;
+            // 
+            // label42
+            // 
+            label42.AutoSize = true;
+            label42.Location = new Point(756, 6);
+            label42.Name = "label42";
+            label42.Size = new Size(54, 15);
+            label42.TabIndex = 35;
+            label42.Text = "End Date";
+            // 
+            // dateTimePicker2
+            // 
+            dateTimePicker2.Font = new Font("Segoe UI", 12F);
+            dateTimePicker2.Location = new Point(756, 21);
+            dateTimePicker2.Name = "dateTimePicker2";
+            dateTimePicker2.Size = new Size(256, 29);
+            dateTimePicker2.TabIndex = 34;
+            // 
+            // label43
+            // 
+            label43.AutoSize = true;
+            label43.Location = new Point(493, 6);
+            label43.Name = "label43";
+            label43.Size = new Size(58, 15);
+            label43.TabIndex = 33;
+            label43.Text = "Start Date";
+            // 
+            // dateTimePicker3
+            // 
+            dateTimePicker3.Font = new Font("Segoe UI", 12F);
+            dateTimePicker3.Location = new Point(493, 21);
+            dateTimePicker3.Name = "dateTimePicker3";
+            dateTimePicker3.Size = new Size(256, 29);
+            dateTimePicker3.TabIndex = 32;
+            // 
+            // label47
+            // 
+            label47.AutoSize = true;
+            label47.FlatStyle = FlatStyle.Flat;
+            label47.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label47.ForeColor = Color.Black;
+            label47.Location = new Point(9, 9);
+            label47.Name = "label47";
+            label47.Size = new Size(145, 21);
+            label47.TabIndex = 16;
+            label47.Text = "SALES REPORTING";
+            // 
+            // listView5
+            // 
+            listView5.BackColor = Color.FromArgb(81, 172, 187);
+            listView5.Columns.AddRange(new ColumnHeader[] { columnHeader28, columnHeader29, columnHeader30, columnHeader31, columnHeader32, columnHeader33, columnHeader34 });
+            listView5.FullRowSelect = true;
+            listView5.GridLines = true;
+            listView5.Location = new Point(9, 56);
+            listView5.Name = "listView5";
+            listView5.Size = new Size(1226, 713);
+            listView5.TabIndex = 10;
+            listView5.UseCompatibleStateImageBehavior = false;
+            listView5.View = View.Details;
+            // 
+            // columnHeader28
+            // 
+            columnHeader28.Text = "Cashier Name";
+            columnHeader28.Width = 250;
+            // 
+            // columnHeader29
+            // 
+            columnHeader29.Text = "Product";
+            columnHeader29.Width = 250;
+            // 
+            // columnHeader30
+            // 
+            columnHeader30.Text = "Quantity";
+            columnHeader30.Width = 100;
+            // 
+            // columnHeader31
+            // 
+            columnHeader31.Text = "Unit";
+            columnHeader31.Width = 100;
+            // 
+            // columnHeader32
+            // 
+            columnHeader32.Text = "Price";
+            columnHeader32.Width = 150;
+            // 
+            // columnHeader33
+            // 
+            columnHeader33.Text = "Sub Total";
+            columnHeader33.Width = 150;
+            // 
+            // columnHeader34
+            // 
+            columnHeader34.Text = "Date Save";
+            columnHeader34.Width = 200;
+            // 
+            // button6
+            // 
+            button6.Dock = DockStyle.Top;
+            button6.FlatAppearance.BorderSize = 0;
+            button6.FlatStyle = FlatStyle.Flat;
+            button6.ForeColor = SystemColors.Control;
+            button6.Image = Properties.Resources.Inventory_report;
+            button6.ImageAlign = ContentAlignment.MiddleLeft;
+            button6.Location = new Point(0, 50);
+            button6.Name = "button6";
+            button6.Padding = new Padding(40, 0, 0, 0);
+            button6.Size = new Size(205, 50);
+            button6.TabIndex = 1;
+            button6.Text = "         Inventory Report";
+            button6.UseVisualStyleBackColor = true;
+            button6.Visible = false;
+            // 
             // admin_dashboard
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.LightGreen;
             ClientSize = new Size(1470, 920);
+            Controls.Add(panel15);
             Controls.Add(label3);
             Controls.Add(panel2);
             Controls.Add(panel1);
@@ -1700,6 +1862,8 @@
             panel14.ResumeLayout(false);
             panel14.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
+            panel15.ResumeLayout(false);
+            panel15.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -1718,7 +1882,6 @@
         private Button button3;
         private Button button4;
         private Button button5;
-        private Button button6;
         private Button button7;
         private Button button8;
         public Panel panel5;
@@ -1848,5 +2011,22 @@
         private Label label41;
         private ColumnHeader columnHeader27;
         private ColumnHeader columnHeader17;
+        public Panel panel15;
+        public ListView listView5;
+        public ColumnHeader columnHeader28;
+        private ColumnHeader columnHeader29;
+        private ColumnHeader columnHeader30;
+        private ColumnHeader columnHeader31;
+        private Label label47;
+        private Button button26;
+        private Label label42;
+        private DateTimePicker dateTimePicker2;
+        private Label label43;
+        private DateTimePicker dateTimePicker3;
+        private ColumnHeader columnHeader32;
+        private ColumnHeader columnHeader33;
+        private ColumnHeader columnHeader34;
+        private Button button27;
+        private Button button6;
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using QuestPDF.Fluent;
+using QuestPDF.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using SysColor = System.Drawing.Color;
+
 
 namespace jandm_pos.Forms
 {
@@ -121,8 +125,8 @@ namespace jandm_pos.Forms
             button13.Enabled = false;
             button10.Enabled = true;
 
-            button15.BackColor = Color.FromArgb(9, 132, 227);
-            button13.BackColor = Color.Gray;
+            button15.BackColor = SysColor.FromArgb(9, 132, 227);
+            button13.BackColor = SysColor.Gray;
 
         }
 
@@ -138,8 +142,8 @@ namespace jandm_pos.Forms
             button13.Enabled = true;
             button10.Enabled = true;
 
-            button15.BackColor = Color.Gray;
-            button13.BackColor = Color.FromArgb(129, 236, 236);
+            button15.BackColor = SysColor.Gray;
+            button13.BackColor = SysColor.FromArgb(129, 236, 236);
         }
 
         private void button10_Click(object sender, EventArgs e)
@@ -148,8 +152,8 @@ namespace jandm_pos.Forms
             button13.Enabled = false;
             button10.Enabled = true;
 
-            button15.BackColor = Color.FromArgb(9, 132, 227);
-            button13.BackColor = Color.Gray;
+            button15.BackColor = SysColor.FromArgb(9, 132, 227);
+            button13.BackColor = SysColor.Gray;
 
             clearCategoryForm();
         }
@@ -205,8 +209,8 @@ namespace jandm_pos.Forms
                 button13.Enabled = false;
                 button10.Enabled = true;
 
-                button15.BackColor = Color.FromArgb(9, 132, 227);
-                button13.BackColor = Color.Gray;
+                button15.BackColor = SysColor.FromArgb(9, 132, 227);
+                button13.BackColor = SysColor.Gray;
                 updateProductCategory.displayCategoriesTble(listView2, "");
                 clearCategoryForm();
             }
@@ -233,8 +237,8 @@ namespace jandm_pos.Forms
             button24.Enabled = false;
             button23.Enabled = true;
 
-            button22.BackColor = Color.FromArgb(9, 132, 227);
-            button24.BackColor = Color.Gray;
+            button22.BackColor = SysColor.FromArgb(9, 132, 227);
+            button24.BackColor = SysColor.Gray;
 
         }
 
@@ -248,7 +252,7 @@ namespace jandm_pos.Forms
             else
             {
                 functions_system showFuncPanel = new functions_system();
-                showFuncPanel.addNewProductInventory(this);
+                showFuncPanel.validateProductBarcode(this, textBox14.Text);
                 showFuncPanel.searchProducts(listView3, "");
                 textBox14.Focus();
             }
@@ -265,8 +269,8 @@ namespace jandm_pos.Forms
             button18.Enabled = false;
             button17.Enabled = true;
 
-            button18.BackColor = Color.Gray;
-            button16.BackColor = Color.FromArgb(9, 132, 227);
+            button18.BackColor = SysColor.Gray;
+            button16.BackColor = SysColor.FromArgb(9, 132, 227);
         }
 
         private void textBox17_KeyPress(object sender, KeyPressEventArgs e)
@@ -300,8 +304,8 @@ namespace jandm_pos.Forms
             button18.Enabled = true;
             button17.Enabled = true;
 
-            button16.BackColor = Color.Gray;
-            button18.BackColor = Color.FromArgb(129, 236, 236);
+            button16.BackColor = SysColor.Gray;
+            button18.BackColor = SysColor.FromArgb(129, 236, 236);
         }
 
         private void button18_Click(object sender, EventArgs e)
@@ -321,8 +325,8 @@ namespace jandm_pos.Forms
                 button18.Enabled = false;
                 button17.Enabled = true;
 
-                button18.BackColor = Color.Gray;
-                button16.BackColor = Color.FromArgb(9, 132, 227);
+                button18.BackColor = SysColor.Gray;
+                button16.BackColor = SysColor.FromArgb(9, 132, 227);
 
                 updateProductInfo.searchProducts(listView3, "");
                 updateProductInfo.clearAddNewProductForm(this);
@@ -357,8 +361,8 @@ namespace jandm_pos.Forms
             button18.Enabled = false;
             button17.Enabled = true;
 
-            button18.BackColor = Color.Gray;
-            button16.BackColor = Color.FromArgb(9, 132, 227);
+            button18.BackColor = SysColor.Gray;
+            button16.BackColor = SysColor.FromArgb(9, 132, 227);
         }
 
         private void listView4_MouseClick(object sender, MouseEventArgs e)
@@ -373,8 +377,8 @@ namespace jandm_pos.Forms
             button24.Enabled = true;
             button23.Enabled = true;
 
-            button22.BackColor = Color.Gray;
-            button24.BackColor = Color.FromArgb(129, 236, 236);
+            button22.BackColor = SysColor.Gray;
+            button24.BackColor = SysColor.FromArgb(129, 236, 236);
         }
 
         private void button23_Click(object sender, EventArgs e)
@@ -384,8 +388,8 @@ namespace jandm_pos.Forms
             button24.Enabled = false;
             button23.Enabled = true;
 
-            button22.BackColor = Color.FromArgb(9, 132, 227);
-            button24.BackColor = Color.Gray;
+            button22.BackColor = SysColor.FromArgb(9, 132, 227);
+            button24.BackColor = SysColor.Gray;
         }
 
         public void clearUnitForm()
@@ -431,8 +435,8 @@ namespace jandm_pos.Forms
                 button24.Enabled = false;
                 button23.Enabled = true;
 
-                button22.BackColor = Color.FromArgb(9, 132, 227);
-                button24.BackColor = Color.Gray;
+                button22.BackColor = SysColor.FromArgb(9, 132, 227);
+                button24.BackColor = SysColor.Gray;
                 updateProductUnit.displayUnitTble(listView4, "");
                 clearUnitForm();
             }
@@ -445,6 +449,60 @@ namespace jandm_pos.Forms
             searchUnit.displayUnitTble(listView4, search);
         }
 
+        private void button19_Click(object sender, EventArgs e)
+        {
+            string search = textBox11.Text;
+            functions_system searchProductsFunc = new functions_system();
+            searchProductsFunc.searchProducts(listView3, search);
+        }
 
+        private void button7_Click(object sender, EventArgs e)
+        {
+            functions_system showFuncPanel = new functions_system();
+            showFuncPanel.ShowFuncPanel(panel15);
+        }
+
+        private void button27_Click(object sender, EventArgs e)
+        {
+            QuestPDF.Settings.License = LicenseType.Community;
+
+            var fn = new functions_system();
+
+            DateTime startDate = dateTimePicker3.Value;
+            DateTime endDate = dateTimePicker2.Value;
+
+            var reportData = fn.GetSalesReport(startDate, endDate);
+
+            // ✅ Check here before generating
+            if (reportData.Count == 0)
+            {
+                MessageBox.Show("No records found for the selected date range.");
+                return;
+            }
+
+            var report = new SalesReportDocument(reportData, startDate, endDate);
+
+
+            // 🔽 Use SaveFileDialog instead of hardcoding the filename
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "PDF Files (*.pdf)|*.pdf";
+                saveFileDialog.FileName = $"JANMPOS_SalesReport_{DateTime.Now:yyyyMMddHHmm}.pdf";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    report.GeneratePdf(saveFileDialog.FileName);
+                    MessageBox.Show("Report saved: " + saveFileDialog.FileName);
+                }
+            }
+        }
+
+        private void button26_Click(object sender, EventArgs e)
+        {
+            DateTime startDate = dateTimePicker3.Value;
+            DateTime endDate = dateTimePicker2.Value;
+            functions_system showFuncPanel = new functions_system();
+            showFuncPanel.filterSales(listView5, startDate, endDate);
+        }
     }
 }

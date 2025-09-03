@@ -39,9 +39,6 @@
             DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(cashier_dashboard));
             panel1 = new Panel();
-            panel6 = new Panel();
-            button7 = new Button();
-            button8 = new Button();
             button1 = new Button();
             panel4 = new Panel();
             label34 = new Label();
@@ -50,6 +47,7 @@
             label4 = new Label();
             pictureBox1 = new PictureBox();
             panel2 = new Panel();
+            label42 = new Label();
             button2 = new Button();
             label5 = new Label();
             panel3 = new Panel();
@@ -65,8 +63,6 @@
             textBox4 = new TextBox();
             label19 = new Label();
             textBox3 = new TextBox();
-            label8 = new Label();
-            button11 = new Button();
             label16 = new Label();
             button10 = new Button();
             label15 = new Label();
@@ -99,7 +95,6 @@
             Column5 = new DataGridViewTextBoxColumn();
             Column6 = new DataGridViewTextBoxColumn();
             panel1.SuspendLayout();
-            panel6.SuspendLayout();
             panel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
@@ -119,8 +114,6 @@
             panel1.AutoScroll = true;
             panel1.BackColor = Color.FromArgb(6, 64, 43);
             panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Controls.Add(panel6);
-            panel1.Controls.Add(button8);
             panel1.Controls.Add(button1);
             panel1.Controls.Add(panel4);
             panel1.Dock = DockStyle.Left;
@@ -128,49 +121,6 @@
             panel1.Name = "panel1";
             panel1.Size = new Size(208, 920);
             panel1.TabIndex = 1;
-            // 
-            // panel6
-            // 
-            panel6.Controls.Add(button7);
-            panel6.Dock = DockStyle.Top;
-            panel6.Location = new Point(0, 356);
-            panel6.Name = "panel6";
-            panel6.Size = new Size(206, 65);
-            panel6.TabIndex = 5;
-            panel6.Visible = false;
-            // 
-            // button7
-            // 
-            button7.Dock = DockStyle.Top;
-            button7.FlatAppearance.BorderSize = 0;
-            button7.FlatStyle = FlatStyle.Flat;
-            button7.ForeColor = SystemColors.Control;
-            button7.Image = Properties.Resources.sales_summary;
-            button7.ImageAlign = ContentAlignment.MiddleLeft;
-            button7.Location = new Point(0, 0);
-            button7.Name = "button7";
-            button7.Padding = new Padding(40, 0, 0, 0);
-            button7.Size = new Size(206, 50);
-            button7.TabIndex = 0;
-            button7.Text = "         Sales Summaries";
-            button7.UseVisualStyleBackColor = true;
-            // 
-            // button8
-            // 
-            button8.Dock = DockStyle.Top;
-            button8.FlatAppearance.BorderSize = 0;
-            button8.FlatStyle = FlatStyle.Flat;
-            button8.ForeColor = SystemColors.Control;
-            button8.Image = Properties.Resources.sales_report;
-            button8.ImageAlign = ContentAlignment.MiddleLeft;
-            button8.Location = new Point(0, 305);
-            button8.Name = "button8";
-            button8.Size = new Size(206, 51);
-            button8.TabIndex = 4;
-            button8.TabStop = false;
-            button8.Tag = "";
-            button8.Text = "Sales and\r\nTransaction Reports";
-            button8.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
@@ -264,6 +214,7 @@
             // 
             panel2.BackColor = Color.FromArgb(6, 64, 43);
             panel2.BorderStyle = BorderStyle.FixedSingle;
+            panel2.Controls.Add(label42);
             panel2.Controls.Add(button2);
             panel2.Controls.Add(label5);
             panel2.Dock = DockStyle.Top;
@@ -271,6 +222,17 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(1262, 56);
             panel2.TabIndex = 2;
+            // 
+            // label42
+            // 
+            label42.AutoSize = true;
+            label42.ForeColor = Color.White;
+            label42.Location = new Point(1111, 20);
+            label42.Name = "label42";
+            label42.Size = new Size(46, 15);
+            label42.TabIndex = 11;
+            label42.Text = "Ctrl + L";
+            label42.Click += l;
             // 
             // button2
             // 
@@ -350,8 +312,6 @@
             panel8.Controls.Add(label6);
             panel8.Controls.Add(button12);
             panel8.Controls.Add(panel9);
-            panel8.Controls.Add(label8);
-            panel8.Controls.Add(button11);
             panel8.Controls.Add(label16);
             panel8.Controls.Add(button10);
             panel8.Controls.Add(label15);
@@ -386,7 +346,7 @@
             label6.AutoSize = true;
             label6.BackColor = Color.LightSeaGreen;
             label6.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            label6.Location = new Point(605, 125);
+            label6.Location = new Point(605, 60);
             label6.Name = "label6";
             label6.Size = new Size(93, 21);
             label6.TabIndex = 32;
@@ -397,11 +357,11 @@
             button12.BackColor = Color.LightSeaGreen;
             button12.Enabled = false;
             button12.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button12.Location = new Point(559, 105);
+            button12.Location = new Point(559, 40);
             button12.Name = "button12";
             button12.Size = new Size(178, 59);
             button12.TabIndex = 31;
-            button12.Text = "F8";
+            button12.Text = "F7";
             button12.TextAlign = ContentAlignment.TopLeft;
             button12.UseVisualStyleBackColor = false;
             button12.Click += button12_Click;
@@ -460,30 +420,6 @@
             textBox3.Size = new Size(444, 96);
             textBox3.TabIndex = 2;
             textBox3.TextAlign = HorizontalAlignment.Center;
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.BackColor = Color.LightSeaGreen;
-            label8.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
-            label8.Location = new Point(595, 61);
-            label8.Name = "label8";
-            label8.Size = new Size(111, 21);
-            label8.TabIndex = 29;
-            label8.Text = "SEARCH ITEM";
-            // 
-            // button11
-            // 
-            button11.BackColor = Color.LightSeaGreen;
-            button11.Enabled = false;
-            button11.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button11.Location = new Point(559, 40);
-            button11.Name = "button11";
-            button11.Size = new Size(178, 59);
-            button11.TabIndex = 28;
-            button11.Text = "F7";
-            button11.TextAlign = ContentAlignment.TopLeft;
-            button11.UseVisualStyleBackColor = false;
             // 
             // label16
             // 
@@ -852,7 +788,6 @@
             Load += cashier_dashboard_Load;
             KeyDown += cashier_dashboard_KeyDown;
             panel1.ResumeLayout(false);
-            panel6.ResumeLayout(false);
             panel4.ResumeLayout(false);
             panel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -879,9 +814,6 @@
         #endregion
 
         private Panel panel1;
-        public Panel panel6;
-        private Button button7;
-        private Button button8;
         private Button button1;
         private Panel panel4;
         private PictureBox pictureBox1;
@@ -912,8 +844,6 @@
         private Button button10;
         private Label label15;
         private Button button9;
-        private Label label8;
-        private Button button11;
         public PictureBox pictureBox5;
         public TextBox textBox1;
         public Label label7;
@@ -938,5 +868,6 @@
         private DataGridViewTextBoxColumn Column5;
         private DataGridViewTextBoxColumn Column6;
         private Label label21;
+        private Label label42;
     }
 }
